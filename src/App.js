@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes, Route,Link} from "react-router-dom"
+import Dashboard from "./components/Dashboard";
+import Sourceofincome from "./components/Sourceofincome";
+import Budget from './components/Budget';
+import { useState } from "react";
+import { UserProvider } from './UserContext';
 
 function App() {
+  const [incomedetails,setincomedetails] = useState({
+    income: '',
+    savings:'',
+    expenses:''
+  });
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <BrowserRouter>
+       <UserProvider>
+       <Routes>
+        <Route path ="/" element={<Dashboard />}/>
+        <Route path ="/source" element={<Sourceofincome />}/>
+        <Route path ="/budget" element={<Budget />}/>
+        </Routes>
+        </UserProvider>
+       </BrowserRouter>
     </div>
   );
 }
