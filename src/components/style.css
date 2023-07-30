@@ -1,3 +1,15 @@
+.heading-input{
+  height: 82%;
+  position: relative;
+  width: 92%;
+  left: 3%;
+}
+.heading-input[text]{
+  font-size: 1vw;
+}
+.mt-6{
+  margin-top: 6px! important;
+}
 .w-15{
   width: 15%;
 }

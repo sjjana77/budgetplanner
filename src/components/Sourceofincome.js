@@ -83,51 +83,52 @@ const Sourceofincome = () => {
         </div>
         <div className="row">
         <div className="col bg-success m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Total Income</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Income</p>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Savings</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Savings</p>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Expenses</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Expenses</p>
         </div>
       </div>
       <div className="row">
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.income} className="form-control p-2" readOnly />
+          <input id="total_income" value={budget_details.income} className="form-control p-2 heading-input" readOnly />
         </div>
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.savings} className="form-control p-2" readOnly />
+          <input id="total_income" value={budget_details.savings} className="form-control p-2 heading-input" readOnly />
         </div>
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.expenses} className="form-control p-2" readOnly />
+          <input id="total_income" value={budget_details.expenses} className="form-control p-2 heading-input" readOnly />
         </div>
       </div>
-      <div className='row'>
-      <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Income Source</p>
+ 
+      <div className="row">
+        <div className="col bg-primary m-3 rounded w-100">
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Source</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Amount</p>
+        <div className="col bg-primary m-3 rounded w-100">
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Amount</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Delete</p>
+        <div className="col bg-primary m-3 rounded w-100">
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Delete</p>
         </div>
-      </div>  
+      </div>
       {selectedsource.length!==0 ? 
       (
       selectedsource.map((e,index)=>(
         <div className='row'>
-          <div className="col w-100">
-          <select className='form-select' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
+          <div className="col">
+          <select className='form-select heading-input' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
               <option value={e.source}>{e.source}</option>
               {filteredOptionsdesign()}
           </select>
           </div>
-          <div className="col w-100">
-            <input name={e.source} type='number' className="form-control mb-3" placeholder={"Amount of "+e.source} onChange={changeIncome} value={e.income} />
+          <div className="col">
+            <input name={e.source} type='number' className="form-control mb-3 heading-input" placeholder={"Amount of "+e.source} onChange={changeIncome} value={e.income} />
           </div>
-          <div className="col w-10 cursor-pointer text-black d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
+          <div className="col cursor-pointer text-black d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
           —
           </div>
         </div>
@@ -152,7 +153,7 @@ const Sourceofincome = () => {
         </div>
 
       }
-        <u className='text-primary' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
+        <u className='text-primary ' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
     </div>
   )
 }
