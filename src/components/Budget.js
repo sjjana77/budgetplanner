@@ -73,7 +73,7 @@ const Budget = () => {
         </div>
         <div className='col'>
             <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" onClick={()=>window.location.href = "/"}></i>
-            <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/source"} style={{marginTop: "3px"}}></i>
+            <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/#/source"} style={{marginTop: "3px"}}></i>
         </div>
         </div>
         <div className="row">

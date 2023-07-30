@@ -78,7 +78,7 @@ const Sourceofincome = () => {
         </div>
         <div className='col'>
             <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/"}></i>
-            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budget"}></i>
+            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/#/budget"}></i>
         </div>
         </div>
         <div className="row">
