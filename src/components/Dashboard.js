@@ -10,8 +10,8 @@ const Dashboard = () => {
         <h3 className='text-black'>DASHBOARD</h3>
         </div>
         <div className='col'>
-            <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/#/source"}></i>
-            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/#/budget"}></i>
+            <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/source"}></i>
+            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/budget"}></i>
         </div>
         </div>
       <div className="row">

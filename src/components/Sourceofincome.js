@@ -77,8 +77,8 @@ const Sourceofincome = () => {
         <h3 className='text-black'>Source of Income</h3>
         </div>
         <div className='col'>
-            <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/"}></i>
-            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/#/budget"}></i>
+            <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/"}></i>
+            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/budget"}></i>
         </div>
         </div>
         <div className="row">
