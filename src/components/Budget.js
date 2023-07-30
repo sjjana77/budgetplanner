@@ -98,43 +98,44 @@ const Budget = () => {
           <input id="total_income" value={budget_details.expenses} className="form-control p-2" readOnly />
         </div>
       </div>
-      <div className='row'>
+      <br />
+      <div className='row m-0'>
       <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Type</p>
         </div>
-        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-4 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Category</p>
         </div>
         <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
         </div>
-        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Amount</p>
         </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-1 w-12 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Delete</p>
         </div>
       </div>  
       {budget.length!==0 ? 
       (
         budget.map((e,index)=>(
-        <div className='row'>
-            <div className="col w-100">
-                <label className='text-black  d-flex justify-content-center'>{e.type}</label>
+        <div className='row m-0'>
+            <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
+                <label className='text-black card-text heading-text d-flex justify-content-center'>{e.type}</label>
             </div>
-          <div className="col w-100">
-          <select className='form-select' aria-label="Default select example" key={index} value={e.category} >
+          <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
+          <select className='form-select card-text heading-text' aria-label="Default select example" key={index} value={e.category} >
               <option value={e.category}>{e.category}</option>
               {filteredOptionsdesign()}
           </select>
           </div>
-          <div className="col w-100">
-            <input name={e.category} type='number' className="form-control mb-3" placeholder="%" data-ctype={e.type} onChange={changePercentage} value={e.percentage} />
+          <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
+            <input name={e.category} type='number' className="form-control mb-3 card-text heading-text" placeholder="%" data-ctype={e.type} onChange={changePercentage} value={e.percentage} />
           </div>
-          <div className="col w-100">
-            <input name={e.category} type='number' className="form-control mb-3 pe-none" placeholder="Amount" value={e.amount} />
+          <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
+            <input name={e.category} type='number' className="form-control mb-3 pe-none card-text heading-text" placeholder="Amount" value={e.amount} />
           </div>
-          <div className="col w-10 cursor-pointer text-black d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.category)}>
+          <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer text-black d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category)}>
           —
           </div>
         </div>
@@ -143,30 +144,30 @@ const Budget = () => {
       : <></>}
       
       {
-         <div id='newsource' className='row' style={{display:"none"}}>
-          <div className="col w-100">
-          <label className='text-black d-flex justify-content-center'>S/E</label>
+         <div id='newsource' className='row m-0' style={{display:"none"}}>
+          <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
+          <label className='text-black card-text heading-text d-flex justify-content-center'>S/E</label>
           </div>
-         <div className="col w-100">
-         <select value={newselectsource} className='form-select' aria-label="Default select example" onChange={addNewSource}>
+         <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
+         <select value={newselectsource} className='form-select card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
           <option value="">Select Source</option>
           {filteredOptionsdesign()}
         </select>
         </div>
-        <div className="col w-100">
-        <input type='number' className="form-control mb-3 pe-none" placeholder="%" id='' />
+        <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
+        <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="%" id='' />
         </div>
 
-        <div className="col w-100">
-        <input type='number' className="form-control mb-3 pe-none" placeholder="Amount" id='' />
+        <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
+        <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="Amount" id='' />
         </div>
-        <div className="col w-100 cursor-pointer text-black d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
+        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer text-black d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
           —
           </div>
         </div>
 
       }
-        <u className='text-primary' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
     </div>
   )
 }
