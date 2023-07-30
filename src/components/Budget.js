@@ -78,13 +78,13 @@ const Budget = () => {
         </div>
         <div className="row">
         <div className="col bg-success m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Total Income</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Total Income</p>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Savings</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Savings</p>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <p className="card-text p-2 d-flex justify-content-center">Expenses</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Expenses</p>
         </div>
       </div>
       <div className="row">
@@ -99,20 +99,20 @@ const Budget = () => {
         </div>
       </div>
       <div className='row'>
-      <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Type</p>
+      <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text d-flex justify-content-center">Type</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Category</p>
+        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text d-flex justify-content-center">Category</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Percentage</p>
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Amount</p>
+        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text d-flex justify-content-center">Amount</p>
         </div>
-        <div className="col w-100 bg-primary m-1 rounded">
-          <p className="card-text p-2 d-flex justify-content-center">Delete</p>
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text d-flex justify-content-center">Delete</p>
         </div>
       </div>  
       {budget.length!==0 ? 
