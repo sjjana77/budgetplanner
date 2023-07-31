@@ -4,6 +4,7 @@ import './style.css'
 
 const Budget = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
+    const count = useRef(0);
     const options = [{type: 'E', category:'Credit Card'}, {type: 'E', category:'School Fees'},
     {type: 'E', category:'Medicines'},
     {type: 'S', category:'Post Office'},
@@ -70,11 +71,15 @@ const Budget = () => {
         tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
         setbudget(tmp);
       }
+      useEffect(()=>{
+        count.current = 1;
+      },[])
   return (
     <div className="container">
         <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>Budget</h3>
+        <h4 className='text-black'>{count}</h4>
         </div>
         <div className='col'>
             <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" onClick={()=>window.location.href = "/budgetplanner/"}></i>

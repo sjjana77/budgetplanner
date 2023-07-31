@@ -4,6 +4,7 @@ import './style.css'
 
 const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
+    const count = useRef(0);
     const options = ['Salary', 'Rent', 'Shares', 'FD', 'RD'];
     const [selectedsource,setselectedsource] = useState([
       {source: "FD", income: "1000", percent : ""},
@@ -90,6 +91,9 @@ const Sourceofincome = () => {
     useEffect(()=>{
       calculateTotalIncome();
     },[selectedsource])
+    useEffect(()=>{
+      count.current = 1;
+    },[])
     // useEffect(()=>{
     //   console.log(incomedetails);
     // })
@@ -98,6 +102,7 @@ const Sourceofincome = () => {
       <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>Source of Income</h3>
+        <h4 className='text-black'>{count}</h4>
         </div>
         <div className='col'>
             <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/"}></i>

@@ -8,6 +8,7 @@ const Dashboard = () => {
       <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>DASHBOARD</h3>
+        <h4>{budget_details.income}</h4>
         </div>
         <div className='col'>
             <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/source"}></i>

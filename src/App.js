@@ -6,11 +6,6 @@ import { useState } from "react";
 import { UserProvider } from './UserContext';
 
 function App() {
-  const [incomedetails,setincomedetails] = useState({
-    income: '',
-    savings:'',
-    expenses:''
-  });
   return (
     <div className="App">
       <Router>
