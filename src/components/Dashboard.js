@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
 const Dashboard = () => {
@@ -11,8 +12,8 @@ const Dashboard = () => {
         <h4 className='text-black'>{budget_details.income}</h4>
         </div>
         <div className='col'>
-            <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/source"}></i>
-            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/budget"}></i>
+        <Link to="/source" className="fa fa-money source-link text-black dashboard-icon cursor-pointer" style={{marginTop: "3px"}}></Link>
+            <Link to="/budget" className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer"></Link>
         </div>
         </div>
         <div className="row">

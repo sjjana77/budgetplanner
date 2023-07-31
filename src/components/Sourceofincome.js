@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
+import { Link } from 'react-router-dom';
 import './style.css'
 
 const Sourceofincome = () => {
@@ -109,8 +110,8 @@ const Sourceofincome = () => {
         <h4 className='text-black'>{count}</h4>
         </div>
         <div className='col'>
-            <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/"}></i>
-            <i className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/budget"}></i>
+        <Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn"></Link>
+        <Link to="/budget" className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer"></Link>
         </div>
         </div>
         <div className="row">
