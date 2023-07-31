@@ -4,7 +4,7 @@ import './style.css'
 
 const Budget = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
-    const count = useRef(0);
+    const [count,setcount] = useState(0);
     const options = [{type: 'E', category:'Credit Card'}, {type: 'E', category:'School Fees'},
     {type: 'E', category:'Medicines'},
     {type: 'S', category:'Post Office'},
@@ -24,6 +24,7 @@ const Budget = () => {
     } 
 
     const addNewSource = (e) =>{
+        
         if(e.target.value!==""){
           document.getElementById("newsource").style.display = "none";
           setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
@@ -44,7 +45,7 @@ const Budget = () => {
         else{
             value = e.target.value;
             let result = ( parseInt(value) / budget_details.income) * 100;
-            changedvalue = {type: e.target.getAttribute("data-ctype"), category: e.target.name, percentage: result, amount: parseInt(e.target.value)};
+            changedvalue = {type: e.target.getAttribute("data-ctype"), category: e.target.name, percentage: result.toFixed(2), amount: parseInt(e.target.value)};
         }
         let tmp = [...budget];
         tmp[index] = changedvalue;
@@ -71,9 +72,7 @@ const Budget = () => {
         tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
         setbudget(tmp);
       }
-      useEffect(()=>{
-        count.current = 1;
-      },[])
+
   return (
     <div className="container">
         <div className='row mt-2'>
@@ -177,7 +176,8 @@ const Budget = () => {
         </div>
 
       }
-        <u className='text-primary heading-text' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
+      setcount(1);}}>+ Add New Income</u>
     </div>
   )
 }

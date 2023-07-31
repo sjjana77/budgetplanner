@@ -4,7 +4,7 @@ import './style.css'
 
 const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
-    const count = useRef(0);
+    const [count,setcount] = useState(0);
     const options = ['Salary', 'Rent', 'Shares', 'FD', 'RD'];
     const [selectedsource,setselectedsource] = useState([
       {source: "FD", income: "1000", percent : ""},
@@ -61,7 +61,7 @@ const Sourceofincome = () => {
       tmp.map(src => t+=parseInt(src.income));
       for (let i = 0; i < tmp.length; i++) {
         let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
-        tmp[i] = {...tmp[i],percent: percent};
+        tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
       }
       setselectedsource(tmp);
     }
@@ -84,16 +84,14 @@ const Sourceofincome = () => {
       tmp[index] = changedvalue;
       for (let i = 0; i < tmp.length; i++) {
         let percent = (parseInt(tmp[i].income)/parseInt(total_incomee))*100;
-        tmp[i] = {...tmp[i],percent: percent};
+        tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
       }
       setselectedsource(tmp);
     }
     useEffect(()=>{
       calculateTotalIncome();
     },[selectedsource])
-    useEffect(()=>{
-      count.current = 1;
-    },[])
+
     // useEffect(()=>{
     //   console.log(incomedetails);
     // })
@@ -190,7 +188,8 @@ const Sourceofincome = () => {
         </div>
 
       }
-        <u className='text-primary ' id='addnewsource' onClick={()=>document.getElementById("newsource").style.display="flex"}>+ Add New Income</u>
+        <u className='text-primary ' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
+      setcount(1);}}>+ Add New Income</u>
     </div>
   )
 }
