@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import PieChartSource from './PieChartSource';
+import PieChartExpenses from './PieChartExpenses';
+import PieChartSavings from './PieChartSavings';
+import icon_source from '../icons/sourceincome.png';
+import icon_budget from '../icons/budget.png';
 
 const Dashboard = () => {
   const { budget_details, setbudget_details } = useContext(UserContext);
@@ -9,11 +14,14 @@ const Dashboard = () => {
       <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>DASHBOARD</h3>
-        <h4 className='text-black'>{budget_details.income}</h4>
         </div>
         <div className='col'>
-        <Link to="/source" className="fa fa-money source-link text-black dashboard-icon cursor-pointer" style={{marginTop: "3px"}}></Link>
-            <Link to="/budget" className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer"></Link>
+        <Link to="/source" className="source-link text-black dashboard-icon cursor-pointer" >
+        <img src={icon_source} height={25} width={30} alt="My Image" />
+        </Link>
+        <Link to="/budget" className="budget-link text-black dashboard-icon cursor-pointer">
+        <img src={icon_budget} height={25} width={30} alt="My Image" />
+        </Link>
         </div>
         </div>
         <div className="row">
@@ -39,6 +47,37 @@ const Dashboard = () => {
         </div>
       </div>
       <br />
+      {JSON.parse(localStorage.getItem("selectedsource")).length !== 0 ?
+      <div className="Piechartt">
+      <div className='card-text heading-text p-2 d-flex justify-content-center'> 
+      <PieChartSource data={JSON.parse(localStorage.getItem("selectedsource"))} />
+      </div>
+      <div className="text-black card-text p-2 d-flex justify-content-center">Source of Income</div>
+    </div>
+    :
+    <></>
+      }
+
+      {JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type==="S").length!==0 ?
+            <div className="Piechartt">
+            <div className='card-text heading-text p-2 d-flex justify-content-center'> 
+            <PieChartSavings data={JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type==="S")} />
+            </div>
+            <div className="text-black card-text p-2 d-flex justify-content-center">Monthly Savings</div>
+          </div>
+          :
+          <></>
+      }
+      {JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type!=="S").length !==0 ?
+            <div className="Piechartt">
+            <div className='card-text heading-text p-2 d-flex justify-content-center'> 
+            <PieChartExpenses data={JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type!=="S")} />
+            </div>
+            <div className="text-black card-text p-2 d-flex justify-content-center">Monthly Expenses</div>
+          </div>
+          :
+          <></>
+      }
 
       <br />
     </div>

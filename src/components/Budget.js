@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
-import './style.css'
+import './style.css';
+import icon_source from '../icons/sourceincome.png';
+import icon_budget from '../icons/budget.png';
 
 const Budget = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
@@ -28,9 +30,13 @@ const Budget = () => {
           setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
         }
     }
-    const deleteSelectedSource = (value) => setbudget(() => budget.filter(prev => prev.category!==value));
+    const deleteSelectedSource = (value) => {
+      setcount(1);
+      setbudget(() => budget.filter(prev => prev.category!==value));
+    }
 
     const changeAmount = (e) =>{
+        setcount(1);
         if(e.target.value[0]==="0"){
             e.target.value = parseInt(e.target.value);
         }
@@ -53,11 +59,11 @@ const Budget = () => {
         let totalExpense = 0;
         let totalSaving = 0;
         budget.forEach(item => {
-            let amount = (budget_details.income * item.percentage) / 100;
+            // let amount = (budget_details.income * item.percentage) / 100;
             if (item.type === 'E') {
-              totalExpense += amount;
+              totalExpense += item.amount;
             } else if (item.type === 'S') {
-              totalSaving += amount;
+              totalSaving += item.amount;
             }
         });
         setbudget_details({...budget_details,savings: totalSaving,expenses: totalExpense})
@@ -68,8 +74,14 @@ const Budget = () => {
         if(budget.length!==0){
           localStorage.setItem("budget", JSON.stringify(budget));
         }
+        else{
+          if(count===1){
+            localStorage.setItem("budget", JSON.stringify([]));
+          }
+        }
       },[budget])
       const changeSelectValue = ( e, index, value ) =>{
+        setcount(1);
         let tmp = [...budget];
         tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
         setbudget(tmp);
@@ -85,13 +97,16 @@ const Budget = () => {
         <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>Budget</h3>
-        <h4 className='text-black'>{count}</h4>
         </div>
         <div className='col'>
             {/* <i className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" onClick={()=>window.location.href = "/budgetplanner/"}></i>
             <i className="fa fa-money source-link text-black dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/source"} style={{marginTop: "3px"}}></i> */}
-<Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn"></Link>
-<Link to="/source" className="fa fa-money source-link text-black dashboard-icon cursor-pointer" style={{marginTop: "3px"}}></Link>
+<Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" style={{marginTop:"8px"}}>
+
+</Link>
+<Link to="/source" className="source-link text-black dashboard-icon cursor-pointer">
+<img src={icon_source} height={25} width={30} alt="My Image" />
+</Link>
         </div>
         </div>
         <div className="row">
@@ -131,7 +146,7 @@ const Budget = () => {
           <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
         </div>
         <div className="col-1 w-12 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
-          <p className="card-text heading-text d-flex justify-content-center">Delete</p>
+          <p className="card-text heading-text d-flex justify-content-center"><i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></p>
         </div>
       </div>  
       {budget.length!==0 ? 

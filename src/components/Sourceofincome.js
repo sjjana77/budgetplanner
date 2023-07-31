@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
-import './style.css'
+import './style.css';
+import icon_source from '../icons/sourceincome.png';
+import icon_budget from '../icons/budget.png';
 
 const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
@@ -12,6 +14,9 @@ const Sourceofincome = () => {
     const calculateTotalIncome = () =>{
       let t = 0;
       selectedsource.map(src => t+=parseInt(src.income));
+      if(isNaN(t)){
+        t="";
+      }
       setbudget_details({...budget_details,income:t});
     }
     // const selectsources = () =>{
@@ -47,11 +52,13 @@ const Sourceofincome = () => {
       }
     }
     const changeSelectValue = ( e, index, value ) =>{
+      setcount(1);
       let tmp = [...selectedsource];
       tmp.splice(index,1,{source:e.target.value, income: "", percent: ""});
       setselectedsource(tmp);
     }
     const deleteSelectedSource = (value) => {
+      setcount(1);
       let tmp = [...selectedsource];
       let previncome = 0;
       tmp = tmp.filter(prev => prev.source!==value);
@@ -64,6 +71,7 @@ const Sourceofincome = () => {
       setselectedsource(tmp);
     }
     const changeIncome = (e) =>{
+      setcount(1);
       const index = selectedsource.findIndex(item => item.source === e.target.name);
       let value = 0;
       if(e.target.value!==""){
@@ -91,6 +99,11 @@ const Sourceofincome = () => {
       if(selectedsource.length!==0){
         localStorage.setItem("selectedsource", JSON.stringify(selectedsource));
       }
+      else{
+        if(count===1){
+          localStorage.setItem("selectedsource", JSON.stringify([]));
+        }
+      }
     },[selectedsource])
 
     useEffect(()=>{
@@ -106,11 +119,12 @@ const Sourceofincome = () => {
       <div className='row mt-2'>
         <div className='col'>
         <h3 className='text-black'>Source of Income</h3>
-        <h4 className='text-black'>{count}</h4>
         </div>
         <div className='col'>
-        <Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn"></Link>
-        <Link to="/budget" className="fa fa-bitcoin budget-link text-black dashboard-icon cursor-pointer"></Link>
+        <Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" style={{marginTop:"8px"}}></Link>
+        <Link to="/budget" className="budget-link text-black dashboard-icon cursor-pointer">
+        <img src={icon_budget} height={25} width={30} alt="My Image" />
+        </Link>
         </div>
         </div>
         <div className="row">
@@ -147,7 +161,7 @@ const Sourceofincome = () => {
           <p className="card-text heading-text p-2 d-flex justify-content-center">Percentage</p>
         </div>
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Delete</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center"><i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></p>
         </div>
       </div>
       {selectedsource.length!==0 ? 
