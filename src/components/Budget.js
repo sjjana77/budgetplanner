@@ -12,10 +12,7 @@ const Budget = () => {
     {type: 'S', category:'RD'},
     {type: 'E', category:'EB'}
     ];
-    const [budget,setbudget] = useState([
-      {type: "E", category: "Credit Card", percentage: 5, amount: 100},
-      {type: "E", category: "School Fees", percentage: 5, amount: 100}
-    ]);
+    const [budget,setbudget] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
 
     const filteredOptionsdesign = () =>{
@@ -67,7 +64,10 @@ const Budget = () => {
       }
       useEffect(()=>{
         calculatebBudget();
-        localStorage.setItem("budget", JSON.stringify(budget));
+        
+        if(budget.length!==0){
+          localStorage.setItem("budget", JSON.stringify(budget));
+        }
       },[budget])
       const changeSelectValue = ( e, index, value ) =>{
         let tmp = [...budget];
@@ -77,6 +77,7 @@ const Budget = () => {
       useEffect(()=>{
         if(count === 0){
           setbudget(JSON.parse(localStorage.getItem("budget")));
+          console.log(JSON.parse(localStorage.getItem("budget")));
         }
       },[])
   return (

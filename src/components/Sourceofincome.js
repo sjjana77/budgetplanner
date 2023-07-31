@@ -7,10 +7,7 @@ const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
     const options = ['Salary', 'Rent', 'Shares', 'FD', 'RD'];
-    const [selectedsource,setselectedsource] = useState([
-      {source: "FD", income: "1000", percent : ""},
-      {source: "RD", income: "3000", percent : ""}
-    ]);
+    const [selectedsource,setselectedsource] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
     const calculateTotalIncome = () =>{
       let t = 0;
@@ -91,7 +88,9 @@ const Sourceofincome = () => {
     }
     useEffect(()=>{
       calculateTotalIncome();
-      localStorage.setItem("selectedsource", JSON.stringify(selectedsource));
+      if(selectedsource.length!==0){
+        localStorage.setItem("selectedsource", JSON.stringify(selectedsource));
+      }
     },[selectedsource])
 
     useEffect(()=>{
