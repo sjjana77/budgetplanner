@@ -66,13 +66,18 @@ const Budget = () => {
       }
       useEffect(()=>{
         calculatebBudget();
+        localStorage.setItem("budget", budget);
       },[budget])
       const changeSelectValue = ( e, index, value ) =>{
         let tmp = [...budget];
         tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
         setbudget(tmp);
       }
-
+      useEffect(()=>{
+        if(count === 0){
+          setbudget(localStorage.getItem("budget"));
+        }
+      },[])
   return (
     <div className="container">
         <div className='row mt-2'>

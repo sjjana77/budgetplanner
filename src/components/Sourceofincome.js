@@ -90,8 +90,14 @@ const Sourceofincome = () => {
     }
     useEffect(()=>{
       calculateTotalIncome();
+      localStorage.setItem("selectedsource", selectedsource);
     },[selectedsource])
 
+    useEffect(()=>{
+      if(count === 0){
+        setselectedsource(localStorage.getItem("selectedsource"));
+      }
+    },[])
     // useEffect(()=>{
     //   console.log(incomedetails);
     // })

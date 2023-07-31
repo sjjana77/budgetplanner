@@ -13,7 +13,9 @@ const UserProvider = ({ children }) => {
     setbudget_details(details);
     localStorage.setItem('budget_details', JSON.stringify(details));
   };
-
+  useEffect(()=>{
+    localStorage.setItem("budget_details", budget_details);
+  },[budget_details])
   return (
     <UserContext.Provider value={{ budget_details, setbudget_details: updateBudgetDetails }}>
       {children}
