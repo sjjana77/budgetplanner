@@ -66,7 +66,7 @@ const Budget = () => {
       }
       useEffect(()=>{
         calculatebBudget();
-        localStorage.setItem("budget", budget);
+        localStorage.setItem("budget", JSON.stringify(budget));
       },[budget])
       const changeSelectValue = ( e, index, value ) =>{
         let tmp = [...budget];
@@ -75,7 +75,7 @@ const Budget = () => {
       }
       useEffect(()=>{
         if(count === 0){
-          setbudget(localStorage.getItem("budget"));
+          setbudget(JSON.parse(localStorage.getItem("budget")));
         }
       },[])
   return (
