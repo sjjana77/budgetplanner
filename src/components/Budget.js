@@ -30,7 +30,7 @@ const Budget = () => {
     }
     const deleteSelectedSource = (value) => setbudget(() => budget.filter(prev => prev.category!==value));
 
-    const changePercentage = (e) =>{
+    const changeAmount = (e) =>{
         if(e.target.value[0]==="0"){
             e.target.value = parseInt(e.target.value);
         }
@@ -42,8 +42,8 @@ const Budget = () => {
         }
         else{
             value = e.target.value;
-            let result = (budget_details.income * parseInt(e.target.value)) / 100;
-            changedvalue = {type: e.target.getAttribute("data-ctype"), category: e.target.name, percentage: parseInt(e.target.value), amount: result};
+            let result = ( parseInt(value) / budget_details.income) * 100;
+            changedvalue = {type: e.target.getAttribute("data-ctype"), category: e.target.name, percentage: result, amount: parseInt(e.target.value)};
         }
         let tmp = [...budget];
         tmp[index] = changedvalue;
@@ -112,10 +112,10 @@ const Budget = () => {
           <p className="card-text heading-text d-flex justify-content-center">Category</p>
         </div>
         <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
-          <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
+          <p className="card-text heading-text d-flex justify-content-center">Amount</p>
         </div>
         <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
-          <p className="card-text heading-text d-flex justify-content-center">Amount</p>
+          <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
         </div>
         <div className="col-1 w-12 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Delete</p>
@@ -135,10 +135,10 @@ const Budget = () => {
           </select>
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-            <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="%" data-ctype={e.type} onChange={changePercentage} value={e.percentage} />
+            <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} />
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-            <input name={e.category} type='number' className="form-control p-1 mb-3 pe-none card-text heading-text" placeholder="Amount" value={e.amount} />
+            <input name={e.category} type='number' className="form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
           </div>
           <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer text-black d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category)}>
           <span className="mt-6">—</span>
