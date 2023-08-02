@@ -47,7 +47,8 @@ const Dashboard = () => {
         </div>
       </div>
       <br />
-      {JSON.parse(localStorage.getItem("selectedsource")).length !== 0 ?
+      {JSON.parse(localStorage.getItem("selectedsource")) !== null ?
+      JSON.parse(localStorage.getItem("selectedsource")).length !== 0 ?
       <div className="Piechartt">
       <div className='card-text heading-text p-2 d-flex justify-content-center'> 
       <PieChartSource data={JSON.parse(localStorage.getItem("selectedsource"))} />
@@ -56,9 +57,12 @@ const Dashboard = () => {
     </div>
     :
     <></>
+    :
+    <></>
       }
 
-      {JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type==="S").length!==0 ?
+      {JSON.parse(localStorage.getItem("budget")) !== null ?
+      JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type==="S").length!==0 ?
             <div className="Piechartt">
             <div className='card-text heading-text p-2 d-flex justify-content-center'> 
             <PieChartSavings data={JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type==="S")} />
@@ -67,14 +71,19 @@ const Dashboard = () => {
           </div>
           :
           <></>
+          :
+          <></>
       }
-      {JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type!=="S").length !==0 ?
+      {JSON.parse(localStorage.getItem("budget")) !== null ?
+      JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type!=="S").length !==0 ?
             <div className="Piechartt">
             <div className='card-text heading-text p-2 d-flex justify-content-center'> 
             <PieChartExpenses data={JSON.parse(localStorage.getItem("budget")).filter(prev=>prev.type!=="S")} />
             </div>
             <div className="text-black card-text p-2 d-flex justify-content-center">Monthly Expenses</div>
           </div>
+          :
+          <></>
           :
           <></>
       }
