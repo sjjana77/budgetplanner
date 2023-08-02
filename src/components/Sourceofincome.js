@@ -36,7 +36,10 @@ const Sourceofincome = () => {
     // const filteredOptions = options.filter((option) => (selectedsource.includes(option)));
     // const filteredOptionsdesign = filteredOptions.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
     const filteredOptionsdesign = () =>{
-      const sources = selectedsource.map(item => item.source);
+      let sources = [];
+      if(selectedsource !== null){
+        sources = selectedsource.map(item => item.source);
+      }
       const filteredOptionss = options.filter((option) => !(sources.includes(option)));
       return filteredOptionss.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
     } 
