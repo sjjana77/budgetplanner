@@ -70,15 +70,21 @@ const Budget = () => {
       }
       useEffect(()=>{
         calculatebBudget();
-        
-        if(budget.length!==0){
-          localStorage.setItem("budget", JSON.stringify(budget));
-        }
-        else{
-          if(count===1){
-            localStorage.setItem("budget", JSON.stringify([]));
+        if(budget!==null){
+          if(budget.length!==0){
+            localStorage.setItem("budget", JSON.stringify(budget));
+          }
+          else{
+            if(count===1){
+              localStorage.setItem("budget", JSON.stringify([]));
+            }
           }
         }
+        // else{
+        //   if(count===1){
+        //     localStorage.setItem("budget", JSON.stringify([]));
+        //   }
+        // }
       },[budget])
       const changeSelectValue = ( e, index, value ) =>{
         setcount(1);
@@ -149,7 +155,8 @@ const Budget = () => {
           <p className="card-text heading-text d-flex justify-content-center"><i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></p>
         </div>
       </div>  
-      {budget.length!==0 ? 
+      {budget !== null ?
+      budget.length!==0 ? 
       (
         budget.map((e,index)=>(
         <div className='row m-0'>
@@ -174,7 +181,9 @@ const Budget = () => {
         </div>
       ))
       )
-      : <></>}
+      : <></>
+    :
+    <></>}
       
       {
          <div id='newsource' className='row m-0' style={{display:"none"}}>

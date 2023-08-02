@@ -96,7 +96,8 @@ const Sourceofincome = () => {
     }
     useEffect(()=>{
       calculateTotalIncome();
-      if(selectedsource.length!==0){
+      if(selectedsource !== null){
+              if(selectedsource.length!==0){
         localStorage.setItem("selectedsource", JSON.stringify(selectedsource));
       }
       else{
@@ -104,6 +105,8 @@ const Sourceofincome = () => {
           localStorage.setItem("selectedsource", JSON.stringify([]));
         }
       }
+      }
+
     },[selectedsource])
 
     useEffect(()=>{
@@ -164,7 +167,8 @@ const Sourceofincome = () => {
           <p className="card-text heading-text p-2 d-flex justify-content-center"><i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></p>
         </div>
       </div>
-      {selectedsource.length!==0 ? 
+      {selectedsource!== null ?
+      selectedsource.length!==0 ? 
       (
       selectedsource.map((e,index)=>(
         <div className='row m-0'>
@@ -186,7 +190,9 @@ const Sourceofincome = () => {
         </div>
       ))
       )  
-      : <></>}
+      : <></>
+    :
+    <></>}
       
       {
          <div id='newsource' className='row m-0' style={{display:"none"}}>
