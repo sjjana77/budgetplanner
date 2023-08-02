@@ -106,6 +106,9 @@ const Sourceofincome = () => {
         }
       }
       }
+      else{
+        setselectedsource([]);
+      }
 
     },[selectedsource])
 
@@ -192,7 +195,7 @@ const Sourceofincome = () => {
       )  
       : <></>
     :
-    <></>}
+    <>{setselectedsource([])}</>}
       
       {
          <div id='newsource' className='row m-0' style={{display:"none"}}>

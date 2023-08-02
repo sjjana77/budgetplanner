@@ -80,6 +80,9 @@ const Budget = () => {
             }
           }
         }
+        else{
+          setbudget([]);
+        }
         // else{
         //   if(count===1){
         //     localStorage.setItem("budget", JSON.stringify([]));
@@ -183,7 +186,7 @@ const Budget = () => {
       )
       : <></>
     :
-    <></>}
+    <>{setbudget([])} </>  }
       
       {
          <div id='newsource' className='row m-0' style={{display:"none"}}>
