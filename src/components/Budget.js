@@ -18,7 +18,10 @@ const Budget = () => {
     const [newselectsource,setnewselectsource] = useState('');
 
     const filteredOptionsdesign = () =>{
-      const sources = budget.map(item => item.category);
+      let sources = [];
+      if(budget !== null){
+        sources = budget.map(item => item.category);
+      }
       const filteredOptionss = options.filter((option) => !(sources.includes(option.category)));
       return filteredOptionss.map((ele,i) => (<option key={i} data-ctype={ele.type} value={ele.category}>{ele.category}</option>))
     } 
