@@ -52,7 +52,7 @@ const Sourceofincome = () => {
     const addNewSource = (e) =>{
       if(e.target.value!==""){
         document.getElementById("newsource").style.display = "none";
-        setselectedsource(prev => [...prev,{source:e.target.value,income:""}]);
+        setselectedsource(prev => [...prev,{source:e.target.value,income:0,percent:0}]);
       }
     }
     const changeSelectValue = ( e, index, value ) =>{
