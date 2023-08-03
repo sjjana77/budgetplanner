@@ -176,7 +176,11 @@ const Budget = () => {
           </select>
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-            <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} />
+            <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} onFocus={(e)=>{
+            if(e.target.value==="0"){
+              e.target.value="";
+            }
+          }} />
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
             <input name={e.category} type='number' className="form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
@@ -203,11 +207,11 @@ const Budget = () => {
         </select>
         </div>
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-        <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="%" id='' />
+        <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="Amount" id='' />
         </div>
 
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-        <input type='number' className="form-control p-1 card-text heading-text mb-3 pe-none" placeholder="Amount" id='' />
+        <input type='number' className="form-control p-1 card-text heading-text mb-3 pe-none" placeholder="%" id='' />
         </div>
         <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer text-black d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
           —
@@ -216,7 +220,7 @@ const Budget = () => {
 
       }
         <u className='text-primary heading-text' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
-      setcount(1);}}>+ Add New Income</u>
+      setcount(1);}}>+ Add New Budget</u>
     </div>
   )
 }

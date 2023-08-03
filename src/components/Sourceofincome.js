@@ -186,7 +186,11 @@ const Sourceofincome = () => {
           </select>
           </div>
           <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-            <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onChange={changeIncome} value={e.income} />
+            <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onFocus={(e)=>{
+            if(e.target.value==="0"){
+              e.target.value="";
+            }
+          }} onChange={changeIncome} value={e.income} />
           </div>
           <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input name={e.source} type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder={"%"} onChange={changeIncome} value={e.percent} />
@@ -210,7 +214,7 @@ const Sourceofincome = () => {
         </select>
         </div>
         <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-        <input type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder="Select Source" id='' />
+        <input type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder="Amount" id='' />
         </div>
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
