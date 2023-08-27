@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import './style.css';
-import icon_source from '../icons/sourceincome.png';
-import icon_budget from '../icons/budget.png';
+// import icon_source from '../icons/sourceincome.png';
+// import icon_budget from '../icons/budget.png';
 
 const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
