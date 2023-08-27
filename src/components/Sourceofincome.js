@@ -17,7 +17,10 @@ const Sourceofincome = () => {
       if(isNaN(t)){
         t="";
       }
-      setbudget_details({...budget_details,income:t});
+      console.log(t);
+      let tmp = {...budget_details};
+      tmp[budget_details.selectedmonth].income = t;
+      setbudget_details(tmp);
     }
     // const selectsources = () =>{
     //     const filteredOptions = options.filter((option) => selectedsource.includes(option));
@@ -58,7 +61,7 @@ const Sourceofincome = () => {
     const changeSelectValue = ( e, index, value ) =>{
       setcount(1);
       let tmp = [...selectedsource];
-      tmp.splice(index,1,{source:e.target.value, income: "", percent: ""});
+      tmp.splice(index,1,{source:e.target.value, income: 0, percent: ""});
       setselectedsource(tmp);
     }
     const deleteSelectedSource = (value) => {
@@ -85,28 +88,36 @@ const Sourceofincome = () => {
       let tmp = [...selectedsource];
       let total_incomee = e.target.value - tmp[index].income;
       if(total_incomee<0){
-        total_incomee = parseInt(budget_details.income) - Math.abs(total_incomee);
+        total_incomee = parseInt(budget_details[budget_details.selectedmonth].income) - Math.abs(total_incomee);
       }
       else{
-        total_incomee = parseInt(budget_details.income) + parseInt(total_incomee);
+        total_incomee = parseInt(budget_details[budget_details.selectedmonth].income) + parseInt(total_incomee);
       }
       const changedvalue = {source: e.target.name, income: value};
       tmp[index] = changedvalue;
+      
       for (let i = 0; i < tmp.length; i++) {
         let percent = (parseInt(tmp[i].income)/parseInt(total_incomee))*100;
         tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
       }
+      
       setselectedsource(tmp);
     }
     useEffect(()=>{
       calculateTotalIncome();
       if(selectedsource !== null){
-              if(selectedsource.length!==0){
-        localStorage.setItem("selectedsource", JSON.stringify(selectedsource));
+          if(selectedsource.length!==0){
+
+            let tmp = {...budget_details};
+            tmp[budget_details.selectedmonth].selectedsource = selectedsource; 
+            setbudget_details(tmp);
+            
       }
       else{
         if(count===1){
-          localStorage.setItem("selectedsource", JSON.stringify([]));
+          let tmp = {...budget_details};
+          tmp[budget_details.selectedmonth].selectedsource = []; 
+          setbudget_details(tmp);
         }
       }
       }
@@ -118,26 +129,39 @@ const Sourceofincome = () => {
 
     useEffect(()=>{
       if(count === 0){
-        setselectedsource(JSON.parse(localStorage.getItem("selectedsource")));
+        if(JSON.parse(localStorage.getItem('budget_details'))[budget_details.selectedmonth] === null || JSON.parse(localStorage.getItem('budget_details'))[budget_details.selectedmonth] === "")  {
+        let empty_month = {income:"",savings:"",expenses:"",selectedsource:[],budget:[]};
+        setbudget_details({...budget_details,[budget_details.selectedmonth]: empty_month});
+        }
+        else{
+          setselectedsource(JSON.parse(localStorage.getItem('budget_details'))[budget_details.selectedmonth].selectedsource);
+        }       
       }
     },[])
     // useEffect(()=>{
     //   console.log(incomedetails);
     // })
+    if(budget_details.fontsize === undefined){
+      budget_details.fontsize = "16";
+    }
+    if(budget_details.fontcolor === undefined){
+      budget_details.fontcolor = "black";
+    }
+    const usercss = {
+      fontSize: `${budget_details.fontsize}px`,
+      color: `${budget_details.fontcolor}`,
+    };
   return (
-    <div className="container">
+    <div className="container" style={usercss}>
       <div className='row mt-2'>
         <div className='col'>
-        <h3 className='text-black'>Source of Income</h3>
+        <h3 className=''>Source of Income</h3>
         </div>
         <div className='col'>
-        <Link to="/" className="fa fa-dashboard dashboard-link text-black dashboard-icon cursor-pointer tooltip-btn" style={{marginTop:"8px"}}></Link>
-        <Link to="/budget" className="budget-link text-black dashboard-icon cursor-pointer">
-        <img src={icon_budget} height={25} width={30} alt="My Image" />
-        </Link>
+        <Link to="/" className="fa fa-arrow-circle-left  dashboard-icon cursor-pointer"></Link>
         </div>
         </div>
-        <div className="row">
+        <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Income</p>
         </div>
@@ -150,28 +174,28 @@ const Sourceofincome = () => {
       </div>
       <div className="row">
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.income} className="form-control p-2 heading-input" readOnly />
+          <input id="total_income" value={budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
         </div>
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.savings} className="form-control p-2 heading-input" readOnly />
+          <input id="total_income" value={budget_details[budget_details.selectedmonth].savings} className="form-control p-2 heading-input" readOnly />
         </div>
         <div className="col rounded w-100">
-          <input id="total_income" value={budget_details.expenses} className="form-control p-2 heading-input" readOnly />
+          <input id="total_income" value={budget_details[budget_details.selectedmonth].expenses} className="form-control p-2 heading-input" readOnly />
         </div>
       </div>
     <br />
-      <div className="row m-0">
+      <div className="row m-0 text-white">
         <div className="col-4 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Source</p>
         </div>
-        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Amount</p>
         </div>
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded w-23">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Percentage</p>
         </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
-          <p className="card-text heading-text p-2 d-flex justify-content-center"><i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></p>
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+          <p className="card-text heading-text p-2 d-flex justify-content-center">Action</p>
         </div>
       </div>
       {selectedsource!== null ?
@@ -186,17 +210,17 @@ const Sourceofincome = () => {
           </select>
           </div>
           <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-            <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onFocus={(e)=>{
+            <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onChange={changeIncome} onFocus={(e)=>{
             if(e.target.value==="0"){
               e.target.value="";
             }
-          }} onChange={changeIncome} value={e.income} />
+          }} value={e.income} />
           </div>
           <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
-            <input name={e.source} type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder={"%"} onChange={changeIncome} value={e.percent} />
+            <input name={e.source} type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
           </div>
-          <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer text-black d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
-          —
+          <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
+          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>
         </div>
       ))
@@ -219,14 +243,14 @@ const Sourceofincome = () => {
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
           </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer text-black d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
-          —
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
+          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>
         </div>
 
       }
         <u className='text-primary ' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
-      setcount(1);}}>+ Add New Income</u>
+      setcount(1);}}>+ Add New Type</u>
     </div>
   )
 }
