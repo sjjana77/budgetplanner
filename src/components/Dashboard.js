@@ -58,6 +58,9 @@ const Dashboard = () => {
         <Link to="/budget" className="budget-link  dashboard-icon cursor-pointer">
         <img src={icon_budget} height={25} width={30} alt="My Image" />
         </Link>
+        <Link to="/settings" className="dashboard-icon cursor-pointer">
+        <i className="fa fa-gear text-black "></i>
+        </Link>
         <div><i className="fa fa-calendar "></i><input type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} /></div>
         </div>
         </div>

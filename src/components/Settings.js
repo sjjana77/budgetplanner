@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { UserContext } from '../UserContext';
+import { Link } from 'react-router-dom';
 
 const Settings = () =>{
     const { budget_details, setbudget_details } = useContext(UserContext);
@@ -26,6 +27,14 @@ const Settings = () =>{
       };
     return(
         <div className='settings container mt-4' style={usercss}>
+        <div className='row mt-2'>
+            <div className='col'>
+            <h3 className=''>Settings</h3>
+            </div>
+            <div className='col'>
+            <Link to="/" className="fa fa-arrow-circle-left  dashboard-icon cursor-pointer"></Link>
+            </div>
+        </div>
             <div className='row'>
                 <div className='col'>
                     Font Color
