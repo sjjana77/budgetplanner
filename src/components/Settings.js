@@ -10,10 +10,20 @@ const Settings = () =>{
         saving:'',
         source:''
     });
+    const addsettings = (type) =>{
+        alert(type);
+    }
     const changehandler = (e) =>{
         setsettingstmpvalue({...settingstmpvalue,[e.target.name]:e.target.value});
         if(e.target.value !== ""){
-            document.getElementsByClassName(e.target.name+"_col")[0].innerHTML = "<button class='btn btn-primary'>Add</button>";
+            document.getElementsByClassName(e.target.name+"_col")[0].innerHTML = "";
+            const btn = document.createElement("button");
+            btn.className = "btn btn-primary";
+            btn.textContent = "Add";
+            btn.addEventListener("click", function() {
+                addsettings(e.target.name); 
+              });
+            document.getElementsByClassName(e.target.name+"_col")[0].appendChild(btn);
         }
         else{
             document.getElementsByClassName(e.target.name+"_col")[0].innerHTML = "";
@@ -98,7 +108,7 @@ const Settings = () =>{
                 <input className='form-control' value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
                 </div>
                 <div className='col source_col'>
-                    <button className='btn btn-primary'>Add</button>
+                   
                 </div>
             </div>
         </div>
