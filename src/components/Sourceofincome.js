@@ -8,7 +8,7 @@ import './style.css';
 const Sourceofincome = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
-    const options = ['Salary', 'Rent', 'Shares', 'FD', 'RD'];
+    const options = budget_details.source_options;
     const [selectedsource,setselectedsource] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
     const calculateTotalIncome = () =>{

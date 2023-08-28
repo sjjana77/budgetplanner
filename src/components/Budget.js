@@ -8,12 +8,7 @@ import icon_budget from '../icons/budget.png';
 const Budget = () => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
-    const options = [{type: 'E', category:'Credit Card'}, {type: 'E', category:'School Fees'},
-    {type: 'E', category:'Medicines'},
-    {type: 'S', category:'Post Office'},
-    {type: 'S', category:'RD'},
-    {type: 'E', category:'EB'}
-    ];
+    const options = budget_details.budget_options;
     const [budget,setbudget] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
 

@@ -15,17 +15,27 @@ const Dashboard = () => {
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth() + 1;
     let currentYear = currentDate.getFullYear();
-    let formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+    let formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth; 
 
     if(localStorage.getItem("budget_details")===null || localStorage.getItem("budget_details")===""){
-      setbudget_details({selectedmonth: currentYear+'-'+formattedMonth,fontsize:'16px',fontcolor:'black',[currentYear+'-'+formattedMonth]:{month: currentYear+'-'+formattedMonth,income:0,savings:0,expenses:0,selectedsource:[],budget:[]}}); 
+      setbudget_details({selectedmonth: currentYear+'-'+formattedMonth,fontsize:'16px',fontcolor:'black',source_options:['Salary', 'Rent', 'Shares', 'FD', 'RD'],budget_options:[{type: 'E', category:'Credit Card'}, {type: 'E', category:'School Fees'},
+      {type: 'E', category:'Medicines'},
+      {type: 'S', category:'Post Office'},
+      {type: 'S', category:'RD'},
+      {type: 'E', category:'EB'}
+      ],[currentYear+'-'+formattedMonth]:{month: currentYear+'-'+formattedMonth,income:0,savings:0,expenses:0,selectedsource:[],budget:[]}}); 
     }
     else{
       if(JSON.parse(localStorage.getItem("budget_details")).selectedmonth !== null && JSON.parse(localStorage.getItem("budget_details")).selectedmonth !== ""){
         // setbudget_details(JSON.parse(localStorage.getItem("budget_details"))[JSON.parse(localStorage.getItem("budget_details")).selectedmonth]);
       }
       else{
-        setbudget_details({selectedmonth: currentYear+'-'+formattedMonth,fontsize:'16px',fontcolor:'black',[currentYear+'-'+formattedMonth]:{month: currentYear+'-'+formattedMonth,income:0,savings:0,expenses:0,selectedsource:[],budget:[]}}); 
+        setbudget_details({selectedmonth: currentYear+'-'+formattedMonth,fontsize:'16px',fontcolor:'black',source_options:['Salary', 'Rent', 'Shares', 'FD', 'RD'],budget_options:[{type: 'E', category:'Credit Card'}, {type: 'E', category:'School Fees'},
+        {type: 'E', category:'Medicines'},
+        {type: 'S', category:'Post Office'},
+        {type: 'S', category:'RD'},
+        {type: 'E', category:'EB'}
+        ],[currentYear+'-'+formattedMonth]:{month: currentYear+'-'+formattedMonth,income:0,savings:0,expenses:0,selectedsource:[],budget:[]}}); 
       }
     }
   },[]);
