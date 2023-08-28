@@ -12,7 +12,7 @@ function App() {
       <Router>
         <UserProvider>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} /> 
             <Route path="/source" element={<Sourceofincome />} />
             <Route path="/budget" element={<Budget />} />
             <Route path="/settings" element={<Settings />} />

@@ -8,10 +8,19 @@ const Settings = () =>{
         feedback:'',
         expense:'',
         saving:'',
-        source:''
-    });
+        source:'' 
+    }); 
     const addsettings = (type) =>{
-        alert(type);
+        if(type === "source"){
+            if(budget_details.source_options.includes(settingstmpvalue.source.toLowerCase())){
+                alert("Source already Present");
+            }
+            else{
+                let tmp = budget_details.source_options;
+                tmp.push(settingstmpvalue.source);
+                setbudget_details({...budget_details,source_options:tmp});
+            }
+        }
     }
     const changehandler = (e) =>{
         setsettingstmpvalue({...settingstmpvalue,[e.target.name]:e.target.value});
@@ -22,12 +31,12 @@ const Settings = () =>{
             btn.textContent = "Add";
             btn.addEventListener("click", function() {
                 addsettings(e.target.name); 
-              });
+            });
             document.getElementsByClassName(e.target.name+"_col")[0].appendChild(btn);
         }
         else{
             document.getElementsByClassName(e.target.name+"_col")[0].innerHTML = "";
-        }
+        } 
     }
 
     if(budget_details.fontsize === undefined){
