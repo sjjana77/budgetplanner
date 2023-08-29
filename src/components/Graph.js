@@ -77,4 +77,4 @@ const Graph = () =>{
     )
 }
 
-export default Graph;
+export default Graph; 
