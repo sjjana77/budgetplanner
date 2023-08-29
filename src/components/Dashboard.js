@@ -194,7 +194,7 @@ const Dashboard = () => {
           :
           <></>
       }
-      <canvas id="barChart"></canvas>
+      {/* <canvas id="barChart"></canvas> */}
       <Graph />
       <br />
     </div>
