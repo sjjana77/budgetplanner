@@ -69,7 +69,7 @@ const Graph = () =>{
         <div id="graphh">
             {(budget_details.selectedmonth !== null && budget_details.selectedmonth !== undefined && budget_details[budget_details.selectedmonth].selectedsource !== null) ? 
             
-            <canvas id="barChart" style={{height: "162px",width:"325px"}}></canvas>
+            <canvas id="barChart" style={{height: "162px !important",width:"325px !important"}}></canvas>
             :
             <></>
             }
