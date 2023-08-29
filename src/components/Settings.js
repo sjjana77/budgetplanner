@@ -10,6 +10,8 @@ const Settings = () =>{
         saving:'',
         source:'' 
     }); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [suggestions, setSuggestions] = useState([]);
     const addsettings = (type) =>{
         if(type === "source"){
             const lowerCaseSourceOptions = budget_details.source_options.map(source => source.toLowerCase());
@@ -62,6 +64,29 @@ const Settings = () =>{
     };
     const changehandler = (e) =>{
         setsettingstmpvalue({...settingstmpvalue,[e.target.name]:e.target.value});
+        let matchingSuggestions;
+        if(e.target.value === ""){
+            matchingSuggestions = [];
+        }
+        else{
+            if(e.target.name === "source"){
+                matchingSuggestions = budget_details.source_options.filter(item =>
+                item.toLowerCase().includes(e.target.value.toLowerCase()));
+            }
+            else if(e.target.name === "expense"){
+                matchingSuggestions = budget_details.budget_options.filter(item => item.type === 'E')
+                .filter(item => item.category.toLowerCase().includes(e.target.value.toLowerCase()))
+                .map(item => item.category);
+    
+            }
+            else if(e.target.name === "saving"){
+                matchingSuggestions = budget_details.budget_options.filter(item => item.type === 'S')
+                .filter(item => item.category.toLowerCase().includes(e.target.value.toLowerCase()))
+                .map(item => item.category);
+            }
+        }
+        
+        setSuggestions(matchingSuggestions);
     }
 
     if(budget_details.fontsize === undefined){
@@ -74,6 +99,7 @@ const Settings = () =>{
         fontSize: `${budget_details.fontsize}px`,
         color: `${budget_details.fontcolor}`,
       };
+
     return(
         <div className='settings container mt-4' style={usercss}>
         <div className='row mt-2'>
@@ -100,6 +126,7 @@ const Settings = () =>{
                 </div>
                 <div className='col'>
                     <input className='form-control' onChange={(e)=>setbudget_details({...budget_details,fontsize:e.target.value})} value={parseInt(budget_details.fontsize)} type="number" min='12' max='60' name='fontsize' placeholder="Size" />
+
                 </div>
                 <div className='col'>
                 </div>
@@ -132,6 +159,15 @@ const Settings = () =>{
                 </div>
                 <div className='col'>
                 <input className='form-control' value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
+                {/* {suggestions.length > 0 && (
+        <div className="suggestions-dropdown">
+          {suggestions.map((item, index) => (
+            <div key={index} className="suggestion-item">
+              {item}
+            </div>
+          ))}
+        </div>
+      )} */}
                 </div>
                 <div className='col saving_col'>
                 {renderAddButton('saving')}
@@ -142,7 +178,19 @@ const Settings = () =>{
                     Add Income Source
                 </div>
                 <div className='col'>
-                <input className='form-control' value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
+                <input className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
+                {isDropdownOpen && (
+        <div className="suggestions-modal">
+          {suggestions.map((item, index) => (
+            <div
+              key={index}
+              className="suggestion-item"
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
                 </div>
                 <div className='col source_col'>
                 {renderAddButton('source')}
