@@ -1,3 +1,7 @@
+a:hover{
+  text-decoration: none;
+  display: inline-block;
+}
 .suggestions-modal{
   background-color: rgb(245 37 37 / 80%);
   z-index: 2;
@@ -11,8 +15,10 @@
   left: 9px;
   position: relative;
 }
-.contentt{
-
+.show_month{
+  position: relative;
+    left: 48%;
+    font-weight: 500;
 }
 .settings .row{
   padding-bottom: 3px;
@@ -79,7 +85,7 @@ canvas{
   color: black;
 }
 .text-white{
-  color: white;
+  color: white !important;
 }
 body{
   color: white;

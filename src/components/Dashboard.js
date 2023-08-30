@@ -9,7 +9,7 @@ import { Chart } from 'chart.js/auto';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
 
-const Dashboard = () => {
+const Dashboard = ({ convertToMonthYear }) => {
   const { budget_details, setbudget_details } = useContext(UserContext);
   const chartRef = useRef(null);
 
@@ -109,34 +109,36 @@ const Dashboard = () => {
 
   return (
     <div className="container" style={usercss}>
-      <div className='row mt-2'>
-        <div className='col'>
-        <h3 className=''>DASHBOARD</h3> 
+      <div className='row mt-3'>
+        <div className='col-5'>
+        <h4 className='justify-content-center'>DASHBOARD</h4> 
         </div>
-        <div className='col'>
-        <Link to="/source" className="source-link  dashboard-icon cursor-pointer" >
-        <img src={icon_source} height={25} width={30} alt="My Image" />
-        </Link>
-        <Link to="/budget" className="budget-link  dashboard-icon cursor-pointer">
-        <img src={icon_budget} height={25} width={30} alt="My Image" />
-        </Link>
-        <Link to="/settings" className="dashboard-icon cursor-pointer">
+        <div className='col-4'>
+        <input className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
+        </div>
+        <div className='col-1' style={{position: "relative",left:"17%"}}>
+        <Link to="/settings" className="dashboard-icon cursor-pointer justify-content-center" style={{position: "relative",top: "-7px",left: "4px"}}>
         <i className="fa fa-gear text-black "></i>
         </Link>
-        <div><i className="fa fa-calendar "></i><input type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} /></div>
         </div>
         </div>
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Income</p>
+        <Link to="/source" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+        </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Savings</p>
+        <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+        </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Expenses</p>
+          <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          </Link>
         </div>
-      </div>
+        </div>
       <div className="row">
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
@@ -195,7 +197,7 @@ const Dashboard = () => {
           <></>
       }
       {/* <canvas id="barChart"></canvas> */}
-      <Graph />
+      <Graph convertToMonthYear={convertToMonthYear} />
       <br />
     </div>
     </div>

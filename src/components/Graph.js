@@ -4,16 +4,16 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
-const Graph = () =>{
+const Graph = ({ convertToMonthYear }) =>{
     const { budget_details, setbudget_details } = useContext(UserContext);
-    function convertToMonthYear(date) {
-        const [year, month] = date.split('-');
-        const months = [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-        ];
-        return months[parseInt(month) - 1] + ' ' + year;
-      }
+    // function convertToMonthYear(date) {
+    //     const [year, month] = date.split('-');
+    //     const months = [
+    //       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    //       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    //     ];
+    //     return months[parseInt(month) - 1] + ' ' + year;
+    //   }
     
       const months = Object.keys(budget_details).filter(key => /^\d{4}-\d{2}$/.test(key));
       const categories = ['income', 'expenses', 'savings'];

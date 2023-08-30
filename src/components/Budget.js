@@ -2,30 +2,48 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
 import './style.css';
+import Select from 'react-select';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
 
-const Budget = () => {
+const Budget = ({ convertToMonthYear }) => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
     const options = budget_details.budget_options;
     const [budget,setbudget] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
 
-    const filteredOptionsdesign = () =>{
+    const getOptionLabel = (option) => {
+      return (
+        <div>
+          {option.label} - <span className="ctype">{option.ctype}</span>
+        </div>
+      );
+    };
+
+    const filteredOptionsdesign = (e,index) =>{
       let sources = [];
       if(budget !== null){
         sources = budget.map(item => item.category);
       }
       const filteredOptionss = options.filter((option) => !(sources.includes(option.category)));
-      return filteredOptionss.map((ele,i) => (<option key={i} data-ctype={ele.type} value={ele.category}>{ele.category}</option>))
+      let tt = filteredOptionss.map((ele,i) => ({label:ele.category,value:ele.category,type:ele.type}));
+      // return filteredOptionss.map((ele,i) => (<option key={i} data-ctype={ele.type} value={ele.category}>{ele.category}</option>))
+      if(e!==undefined && index!== undefined){
+        return <Select className='selectt text-black' key={index} options={tt} value={{label:e.category,value:e.category}} onChange={(ee)=>changeSelectValue(ee,index,e.category)} isSearchable  />;
+        
+      }
+      else{
+        return <Select options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
+      }
     } 
 
     const addNewSource = (e) =>{
         
-        if(e.target.value!==""){
+        if(e.value!==""){
           document.getElementById("newsource").style.display = "none";
-          setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
+          // setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
+          setbudget(prev => [...prev,{type:e.type,category:e.value,percentage:0,amount:0}]);
         }
     }
     const deleteSelectedSource = (value) => {
@@ -118,7 +136,8 @@ const Budget = () => {
       const changeSelectValue = ( e, index, value ) =>{
         setcount(1);
         let tmp = [...budget];
-        tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
+        // tmp.splice(index,1,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0});
+        tmp.splice(index,1,{type:e.type,category:e.value,percentage:0,amount:0});
         setbudget(tmp);
       }
       useEffect(()=>{
@@ -145,20 +164,27 @@ const Budget = () => {
         <div className='col'>
             {/* <i className="fa fa-dashboard dashboard-link  dashboard-icon cursor-pointer tooltip-btn" onClick={()=>window.location.href = "/budgetplanner/"}></i>
             <i className="fa fa-money source-link  dashboard-icon cursor-pointer" onClick={()=>window.location.href = "/budgetplanner/#/source"} style={{marginTop: "3px"}}></i> */}
+          <span className='show_month'>{convertToMonthYear(budget_details.selectedmonth)}</span>
           <Link to="/" className="fa fa-arrow-circle-left  dashboard-icon cursor-pointer"></Link>
         </div>
         </div>
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Income</p>
+        <Link to="/source" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+        </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Savings</p>
+        <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+        </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Expenses</p>
+          <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          </Link>
         </div>
-      </div>
+        </div>
       <div className="row">
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
@@ -197,10 +223,11 @@ const Budget = () => {
                 <label className=' card-text heading-text mt-6 d-flex justify-content-center'>{e.type}</label>
             </div>
           <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
-          <select className='form-select card-text heading-text' aria-label="Default select example" key={index} value={e.category} onChange={(ee)=>changeSelectValue(ee,index,e.category)} >
+          {/* <select className='form-select card-text heading-text' aria-label="Default select example" key={index} value={e.category} onChange={(ee)=>changeSelectValue(ee,index,e.category)} >
               <option value={e.category}>{e.category}</option>
               {filteredOptionsdesign()}
-          </select>
+          </select> */}
+          {filteredOptionsdesign(e,index)}
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
             <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} onFocus={(e)=>{
@@ -228,10 +255,11 @@ const Budget = () => {
           <label className=' card-text heading-text d-flex justify-content-center mt-6'>S/E</label>
           </div>
          <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
-         <select value={newselectsource} className='form-select card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
+         {/* <select value={newselectsource} className='form-select card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
           <option value="">Select Source</option>
           {filteredOptionsdesign()}
-        </select>
+          </select> */}
+          {filteredOptionsdesign()}
         </div>
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
         <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="Amount" id='' />

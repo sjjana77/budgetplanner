@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
+import MyModal from './MyModal';
 
-const Settings = () =>{
+const Settings = ({ convertToMonthYear }) =>{
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [settingstmpvalue,setsettingstmpvalue] = useState({
         feedback:'',
@@ -10,6 +11,16 @@ const Settings = () =>{
         saving:'',
         source:'' 
     }); 
+    const [showModal, setShowModal] = useState(false);
+    const [modalcontent,setmodalcontent] = useState('');
+
+    const handleOpenModal = () => {
+      setShowModal(true);
+    };
+  
+    const handleCloseModal = () => {
+      setShowModal(false);
+    };
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [suggestions_source, setsuggestions_source] = useState([]);
     const [suggestions_saving, setsuggestions_saving] = useState([]);
@@ -18,7 +29,8 @@ const Settings = () =>{
         if(type === "source"){
             const lowerCaseSourceOptions = budget_details.source_options.map(source => source.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.source.toLowerCase().trim())){
-                alert("Source already Present");
+              setmodalcontent('Source Already Present');
+              handleOpenModal();
             }
             else{
                 let tmp = budget_details.source_options;
@@ -31,7 +43,8 @@ const Settings = () =>{
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'S') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.saving.toLowerCase().trim())){
-                alert("Savings Type already Present");
+              setmodalcontent('Savings Already Present');
+              handleOpenModal();
             }
             else{
                 let tmp = budget_details.budget_options;
@@ -44,7 +57,8 @@ const Settings = () =>{
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'E') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.expense.toLowerCase().trim())){
-                alert("Expense already Present");
+                setmodalcontent('Expense Already Present');
+                handleOpenModal();
             }
             else{
                 let tmp = budget_details.budget_options;
@@ -72,18 +86,24 @@ const Settings = () =>{
                 matchingSuggestions = budget_details.source_options.filter(item =>
                 item.toLowerCase().includes(e.target.value.toLowerCase()));
                 setsuggestions_source(matchingSuggestions);
+                setsuggestions_expense([]);
+                setsuggestions_saving([]);
             }
             else if(e.target.name === "expense"){
                 matchingSuggestions = budget_details.budget_options.filter(item => item.type === 'E')
                 .filter(item => item.category.toLowerCase().includes(e.target.value.toLowerCase()))
                 .map(item => item.category);
                 setsuggestions_expense(matchingSuggestions);
+                setsuggestions_source([]);
+                setsuggestions_saving([]);
             }
             else if(e.target.name === "saving"){
                 matchingSuggestions = budget_details.budget_options.filter(item => item.type === 'S')
                 .filter(item => item.category.toLowerCase().includes(e.target.value.toLowerCase()))
                 .map(item => item.category);
                 setsuggestions_saving(matchingSuggestions);
+                setsuggestions_source([]);
+                setsuggestions_expense([]);
             }
         }
         else{
@@ -104,7 +124,27 @@ const Settings = () =>{
         fontSize: `${budget_details.fontsize}px`,
         color: `${budget_details.fontcolor}`,
       };
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.suggestions-modal') && !event.target.closest('.form-control')) {
+                setIsDropdownOpen(false);
+                setsuggestions_source([]);
+                setsuggestions_expense([]);
+                setsuggestions_saving([]);
+            }
+        };
 
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        addsettings(event.target.name);
+      }
+    };
     return(
         <div className='settings container mt-4' style={usercss}>
         <div className='row mt-2'>
@@ -112,6 +152,7 @@ const Settings = () =>{
             <h3 className=''>Settings</h3>
             </div>
             <div className='col'>
+            <span className='show_month'>{convertToMonthYear(budget_details.selectedmonth)}</span>
             <Link to="/" className="fa fa-arrow-circle-left  dashboard-icon cursor-pointer"></Link>
             </div>
         </div>
@@ -141,7 +182,7 @@ const Settings = () =>{
                     Feedback
                 </div>
                 <div className='col'>
-                    <textarea className='form-control' name='feedback' value={settingstmpvalue.feedback} id='feedback' onChange={changehandler} placeholder='Feedback'></textarea>
+                    <textarea onKeyDown={handleKeyDown} className='form-control' name='feedback' value={settingstmpvalue.feedback} id='feedback' onChange={changehandler} placeholder='Feedback'></textarea>
                 </div>
                 <div className='col feedback_col'>
                 {renderAddButton('feedback')}
@@ -152,7 +193,7 @@ const Settings = () =>{
                     Add Expense
                 </div>
                 <div className='col'>
-                <input className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.expense} id='expense' name='expense' onChange={changehandler} type="text" placeholder="Expense" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.expense} id='expense' name='expense' onChange={changehandler} type="text" placeholder="Expense" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -176,7 +217,7 @@ const Settings = () =>{
                     Add Saving
                 </div>
                 <div className='col'>
-                <input className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -210,7 +251,7 @@ const Settings = () =>{
                     Add Income Source
                 </div>
                 <div className='col'>
-                <input className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -229,6 +270,9 @@ const Settings = () =>{
                 {renderAddButton('source')}
                 </div>
             </div>
+            
+            <MyModal show={showModal} content={modalcontent} onClose={handleCloseModal} />
+
         </div>
     )
 }

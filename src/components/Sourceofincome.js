@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom'; 
+import Select from 'react-select';
 import './style.css';
 // import icon_source from '../icons/sourceincome.png';
 // import icon_budget from '../icons/budget.png';
 
-const Sourceofincome = () => {
+const Sourceofincome = ({ convertToMonthYear }) => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
     const options = budget_details.source_options;
@@ -37,14 +38,21 @@ const Sourceofincome = () => {
     // }
     // const filteredOptions = options.filter((option) => (selectedsource.includes(option)));
     // const filteredOptionsdesign = filteredOptions.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
-    const filteredOptionsdesign = () =>{  
-      
+    const filteredOptionsdesign = (e,index) =>{
       let sources = [];
       if(selectedsource !== null){
         sources = selectedsource.map(item => item.source);
       }
       const filteredOptionss = options.filter((option) => !(sources.includes(option)));
-      return filteredOptionss.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
+      let tt = filteredOptionss.map((ele,i) => ({label:ele,value:ele}));
+      if(e!==undefined && index!== undefined){
+        return <Select key={index} options={tt} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)} />;
+        
+      }
+      else{
+        return <Select options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
+      }
+      // return filteredOptionss.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
     } 
 //     const selectedSourceMap = () =>{
 //       return (
@@ -52,15 +60,15 @@ const Sourceofincome = () => {
 //       )
 //     }
     const addNewSource = (e) =>{
-      if(e.target.value!==""){
+      if(e.value!==""){
         document.getElementById("newsource").style.display = "none";
-        setselectedsource(prev => [...prev,{source:e.target.value,income:0,percent:0}]);
+        setselectedsource(prev => [...prev,{source:e.value,income:0,percent:0}]);
       }
     }
     const changeSelectValue = ( e, index, value ) =>{
       setcount(1);
       let tmp = [...selectedsource];
-      tmp.splice(index,1,{source:e.target.value, income: 0, percent: ""});
+      tmp.splice(index,1,{source:e.value, income: 0, percent: ""});
       setselectedsource(tmp);
     }
     const deleteSelectedSource = (value) => {
@@ -157,20 +165,27 @@ const Sourceofincome = () => {
         <h3 className=''>Source of Income</h3>
         </div>
         <div className='col'>
+        <span className='show_month'>{convertToMonthYear(budget_details.selectedmonth)}</span>
         <Link to="/" className="fa fa-arrow-circle-left  dashboard-icon cursor-pointer"></Link>
         </div>
         </div>
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Income</p>
+        <Link to="/source" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+        </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Savings</p>
+        <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+        </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <p className="card-text heading-text p-2 d-flex justify-content-center">Expenses</p>
+          <Link to="/budget" className="d-block">
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          </Link>
         </div>
-      </div>
+        </div>
       <div className="row">
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
@@ -203,10 +218,12 @@ const Sourceofincome = () => {
       selectedsource.map((e,index)=>(
         <div className='row m-0'>
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-          <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
+          {/* <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
               <option value={e.source}>{e.source}</option>
-              {filteredOptionsdesign()}
-          </select>
+              
+          </select> */}
+          {/* <Select key={index} options={foptions} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)} /> */}
+          {filteredOptionsdesign(e,index)}
           </div>
           <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
             <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onChange={changeIncome} onFocus={(e)=>{
@@ -231,10 +248,11 @@ const Sourceofincome = () => {
       {
          <div id='newsource' className='row m-0' style={{display:"none"}}>
          <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-         <select value={newselectsource} className='form-select heading-input card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
+         {/* <select value={newselectsource} className='form-select heading-input card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
           <option value="">Select Source</option>
           {filteredOptionsdesign()}
-        </select>
+        </select> */}
+        {filteredOptionsdesign()}
         </div>
         <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
         <input type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder="Amount" id='' />
