@@ -145,6 +145,74 @@ const Settings = ({ convertToMonthYear }) =>{
         addsettings(event.target.name);
       }
     };
+
+    const deleteitem= (type,value) =>{
+      let count,cc,index;
+      if(type === "source"){
+        count = getCount(value, budget_details.source_count);
+        if(count > 0){
+          setmodalcontent(`${value} has values in Sources, if you want to delete, first delete ${value} in source and try again`);
+          handleOpenModal();
+        }
+        else{
+          cc = {...budget_details};
+          cc = cc.source_options;
+          index = cc.indexOf(value);
+          cc.splice(index,1);
+          setbudget_details({...budget_details, source_options:cc});
+        }
+        setsettingstmpvalue({...settingstmpvalue,source:''});
+        setsuggestions_source([]);
+      }
+      else if(type === 'expenses'){
+        count = getCount(value, budget_details.expenses_count);
+        if(count > 0){
+          setmodalcontent(`${value} has values in Expenses, if you want to delete, first delete ${value} in expense and try again`);
+          handleOpenModal();
+        }
+        else{
+          cc = [...budget_details.budget_options];
+          const matchingEntries = cc.filter(option => (
+            option.type === 'E' && option.category === value
+          ));
+          if (matchingEntries.length > 0) {
+            index = cc.indexOf(matchingEntries[0]);
+          }
+          cc.splice(index,1);
+          setbudget_details({...budget_details, budget_options:cc});
+        }
+        setsettingstmpvalue({...settingstmpvalue,expense:''});
+        setsuggestions_expense([]);
+      }
+      else{
+        count = getCount(value, budget_details.savings_count);
+        if(count > 0){
+          setmodalcontent(`${value} has values in Savings, if you want to delete, first delete ${value} in saving and try again`);
+          handleOpenModal();
+        }
+        else{
+          cc = [...budget_details.budget_options];
+          const matchingEntries = cc.filter(option => (
+            option.type === 'S' && option.category === value
+          ));
+          if (matchingEntries.length > 0) {
+            index = cc.indexOf(matchingEntries[0]);
+          }
+          cc.splice(index,1);
+          setbudget_details({...budget_details, budget_options:cc});
+        }
+        setsettingstmpvalue({...settingstmpvalue,saving:''});
+        setsuggestions_saving([]);
+      }
+    }
+    function getCount(value, dataList) {
+      for (let i = 0; i < dataList.length; i++) {
+          if (dataList[i].name === value) {
+              return dataList[i].count;
+          }
+      }
+      return 0; 
+    }
     return(
         <div className='settings container mt-4' style={usercss}>
         <div className='row mt-2'>
@@ -193,7 +261,7 @@ const Settings = ({ convertToMonthYear }) =>{
                     Add Expense
                 </div>
                 <div className='col'>
-                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.expense} id='expense' name='expense' onChange={changehandler} type="text" placeholder="Expense" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_source([]);setsuggestions_saving([]);}} value={settingstmpvalue.expense} id='expense' name='expense' onChange={changehandler} type="text" placeholder="Expense" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -202,7 +270,7 @@ const Settings = ({ convertToMonthYear }) =>{
                       key={index}
                       className="suggestion-item"
                     >
-                      {item}
+                      {item}<span name='expense' onClick={()=>deleteitem('expenses',item)} className='close text-white'>x</span>
                     </div>
                   ))}
                 </div></div>
@@ -217,7 +285,7 @@ const Settings = ({ convertToMonthYear }) =>{
                     Add Saving
                 </div>
                 <div className='col'>
-                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_source([]);setsuggestions_expense([]);}} value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -226,7 +294,7 @@ const Settings = ({ convertToMonthYear }) =>{
                       key={index}
                       className="suggestion-item"
                     >
-                      {item}
+                      {item}<span name='expense' onClick={()=>deleteitem('savings',item)} className='close text-white'>x</span>
                     </div>
                   ))}
                   </div>
@@ -251,7 +319,7 @@ const Settings = ({ convertToMonthYear }) =>{
                     Add Income Source
                 </div>
                 <div className='col'>
-                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => setIsDropdownOpen(true)} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
+                <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_expense([]);setsuggestions_saving([]);}} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
                     <div className='contentt'>
@@ -260,7 +328,7 @@ const Settings = ({ convertToMonthYear }) =>{
                       key={index}
                       className="suggestion-item"
                     >
-                      {item}
+                      {item}<span name='expense' onClick={()=>deleteitem('source',item)} className='close text-white'>x</span>
                     </div>
                   ))}
                 </div></div>

@@ -11,7 +11,6 @@ import icon_budget from '../icons/budget.png';
 
 const Dashboard = ({ convertToMonthYear }) => {
   const { budget_details, setbudget_details } = useContext(UserContext);
-  const chartRef = useRef(null);
 
   useEffect(() => {
     let currentDate = new Date();

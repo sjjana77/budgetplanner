@@ -43,32 +43,61 @@ const Budget = ({ convertToMonthYear }) => {
         if(e.value!==""){
           document.getElementById("newsource").style.display = "none";
           // setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
-          
-          let index = budget_details.budget_count.findIndex(item => item.name === e.value);
-          let cc = [...budget_details.budget_count];
-          if(index !== -1){
-            cc[index] = {name: e.value,count: cc[index].count+1};
+          console.log(e.type);
+          let index,cc;
+          if(e.type === "E"){
+            index = budget_details.expenses_count.findIndex(item => item.name === e.value);
+             cc = [...budget_details.expenses_count];
+            if(index !== -1){
+              cc[index] = {name: e.value,count: cc[index].count+1};
+            }
+            else{
+              cc.push({name:e.value,count:1});
+            }
+            setbudget_details({...budget_details,expenses_count:cc});
           }
           else{
-            cc.push({name:e.value,count:1});
+            index = budget_details.savings_count.findIndex(item => item.name === e.value);
+            cc = [...budget_details.savings_count];
+           if(index !== -1){
+             cc[index] = {name: e.value,count: cc[index].count+1};
+           }
+           else{
+             cc.push({name:e.value,count:1});
+           }
+           setbudget_details({...budget_details,savings_count:cc});
           }
-          setbudget_details({...budget_details,budget_count:cc});
+
 
           setbudget(prev => [...prev,{type:e.type,category:e.value,percentage:0,amount:0}]);
         }
     }
-    const deleteSelectedSource = (value) => {
+    const deleteSelectedSource = (value,type) => {
       setcount(1);
-
-      let index = budget_details.budget_count.findIndex(item => item.name === value);
-      let cc = [...budget_details.budget_count];
-      if(index !== -1){
-        cc[index] = {name: value,count: cc[index].count-1};
+      let index,cc;
+      if(type === "E"){
+        index = budget_details.expenses_count.findIndex(item => item.name === value);
+        cc = [...budget_details.expenses_count];
+        if(index !== -1){
+          cc[index] = {name: value,count: cc[index].count-1};
+        }
+        else{
+          cc.push({name:value,count:1});
+        }
+        setbudget_details({...budget_details,expenses_count:cc});
       }
       else{
-        cc.push({name:value,count:1});
+        index = budget_details.savings_count.findIndex(item => item.name === value);
+        cc = [...budget_details.savings_count];
+        if(index !== -1){
+          cc[index] = {name: value,count: cc[index].count-1};
+        }
+        else{
+          cc.push({name:value,count:1});
+        }
+        setbudget_details({...budget_details,savings_count:cc});
       }
-      setbudget_details({...budget_details,budget_count:cc});
+
 
       setbudget(() => budget.filter(prev => prev.category!==value));
     }
@@ -261,7 +290,7 @@ const Budget = ({ convertToMonthYear }) => {
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
             <input name={e.category} type='number' className="form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
           </div>
-          <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category)}>
+          <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category,e.type)}>
           <span className="mt-6"> <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></span>
           </div>
         </div>

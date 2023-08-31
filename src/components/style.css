@@ -1,6 +1,12 @@
-#barChart{
-  height: 235px !important;
-  width: 470px !important;
+.close{
+  position: relative;
+  cursor: pointer;
+  left: -4px;
+  margin-top: -6px;
+}
+#barChart {
+  height: 320px!important;
+  width: 100%!important;
 }
 a:hover{
   text-decoration: none;
@@ -20,8 +26,7 @@ a{
   font-size: 13px;
   padding: 2px;
   color: white;
-  left: 9px;
-  position: relative;
+  margin-left: 9px;
 }
 .show_month{
   position: relative;
