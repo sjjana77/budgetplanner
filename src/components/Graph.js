@@ -2,6 +2,7 @@
 import { Chart } from 'chart.js/auto';
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import './style.css'
 import { UserContext } from '../UserContext';
 
 const Graph = ({ convertToMonthYear }) =>{

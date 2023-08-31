@@ -62,6 +62,15 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     const addNewSource = (e) =>{
       if(e.value!==""){
         document.getElementById("newsource").style.display = "none";
+        let index = budget_details.source_count.findIndex(item => item.name === e.value);
+        let cc = [...budget_details.source_count];
+        if(index !== -1){
+          cc[index] = {name: e.value,count: cc[index].count+1};
+        }
+        else{
+          cc.push({name:e.value,count:1});
+        }
+        setbudget_details({...budget_details,source_count:cc});
         setselectedsource(prev => [...prev,{source:e.value,income:0,percent:0}]);
       }
     }
@@ -78,6 +87,14 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       tmp = tmp.filter(prev => prev.source!==value);
       let t = 0;
       tmp.map(src => t+=parseInt(src.income));
+
+      let index = budget_details.source_count.findIndex(item => item.name === value);
+      let cc = [...budget_details.source_count];
+      if(index !== -1){
+        cc[index] = {name: value,count: cc[index].count-1};
+      }
+      setbudget_details({...budget_details,source_count:cc});
+
       for (let i = 0; i < tmp.length; i++) {
         let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
         tmp[i] = {...tmp[i],percent: percent.toFixed(2)};

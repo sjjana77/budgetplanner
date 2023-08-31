@@ -1,6 +1,14 @@
+#barChart{
+  height: 235px !important;
+  width: 470px !important;
+}
 a:hover{
   text-decoration: none;
   display: inline-block;
+}
+a{
+  text-decoration: none;
+  
 }
 .suggestions-modal{
   background-color: rgb(245 37 37 / 80%);

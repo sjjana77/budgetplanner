@@ -41,6 +41,7 @@ const Dashboard = ({ convertToMonthYear }) => {
           selectedsource: [],
           budget: [],
         },
+        source_count: [],savings_count:[],expenses_count:[]
       });
     } else {
       if (
@@ -70,6 +71,7 @@ const Dashboard = ({ convertToMonthYear }) => {
             selectedsource: [],
             budget: [],
           },
+          source_count: [],savings_count:[],expenses_count:[]
         });
       }
     }

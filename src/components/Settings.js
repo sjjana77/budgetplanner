@@ -29,7 +29,7 @@ const Settings = ({ convertToMonthYear }) =>{
         if(type === "source"){
             const lowerCaseSourceOptions = budget_details.source_options.map(source => source.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.source.toLowerCase().trim())){
-              setmodalcontent('Source Already Present');
+              setmodalcontent(`${settingstmpvalue.source} Already Present in Source`);
               handleOpenModal();
             }
             else{
@@ -43,7 +43,7 @@ const Settings = ({ convertToMonthYear }) =>{
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'S') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.saving.toLowerCase().trim())){
-              setmodalcontent('Savings Already Present');
+              setmodalcontent(`${settingstmpvalue.saving} Already Present in Savings`);
               handleOpenModal();
             }
             else{
@@ -57,7 +57,7 @@ const Settings = ({ convertToMonthYear }) =>{
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'E') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.expense.toLowerCase().trim())){
-                setmodalcontent('Expense Already Present');
+                setmodalcontent(`${settingstmpvalue.expense} Already Present in Expenses`);
                 handleOpenModal();
             }
             else{

@@ -43,11 +43,33 @@ const Budget = ({ convertToMonthYear }) => {
         if(e.value!==""){
           document.getElementById("newsource").style.display = "none";
           // setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
+          
+          let index = budget_details.budget_count.findIndex(item => item.name === e.value);
+          let cc = [...budget_details.budget_count];
+          if(index !== -1){
+            cc[index] = {name: e.value,count: cc[index].count+1};
+          }
+          else{
+            cc.push({name:e.value,count:1});
+          }
+          setbudget_details({...budget_details,budget_count:cc});
+
           setbudget(prev => [...prev,{type:e.type,category:e.value,percentage:0,amount:0}]);
         }
     }
     const deleteSelectedSource = (value) => {
       setcount(1);
+
+      let index = budget_details.budget_count.findIndex(item => item.name === value);
+      let cc = [...budget_details.budget_count];
+      if(index !== -1){
+        cc[index] = {name: value,count: cc[index].count-1};
+      }
+      else{
+        cc.push({name:value,count:1});
+      }
+      setbudget_details({...budget_details,budget_count:cc});
+
       setbudget(() => budget.filter(prev => prev.category!==value));
     }
 
