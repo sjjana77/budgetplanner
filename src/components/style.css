@@ -1,3 +1,6 @@
+.d-block:hover{
+  opacity: 0.6 ;
+}
 .close{
   position: relative;
   cursor: pointer;

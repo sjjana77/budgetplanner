@@ -5,6 +5,7 @@ import PieChartSource from './PieChartSource';
 import PieChartExpenses from './PieChartExpenses';
 import PieChartSavings from './PieChartSavings';
 import Graph from  './Graph';
+import './style.css';
 import { Chart } from 'chart.js/auto';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
