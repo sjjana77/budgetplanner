@@ -41,7 +41,7 @@ const Dashboard = ({ convertToMonthYear }) => {
           selectedsource: [],
           budget: [],
         },
-        source_count: [],savings_count:[],expenses_count:[]
+        source_count: [],savings_count:[],expenses_count:[],askdelete:"yes"
       });
     } else {
       if (
@@ -71,7 +71,7 @@ const Dashboard = ({ convertToMonthYear }) => {
             selectedsource: [],
             budget: [],
           },
-          source_count: [],savings_count:[],expenses_count:[]
+          source_count: [],savings_count:[],expenses_count:[],askdelete:"yes"
         });
       }
     }
@@ -125,7 +125,7 @@ const Dashboard = ({ convertToMonthYear }) => {
         </div>
         </div>
         <div className="row text-white">
-        <div className="col bg-success m-3 rounded w-100">
+        <div className="col bg-success m-3 rounded w-100" onmousedown="return false">
         <Link to="/source" className="d-block">
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
         </Link>
@@ -142,7 +142,7 @@ const Dashboard = ({ convertToMonthYear }) => {
         </div>
         </div>
       <div className="row">
-        <div className="col rounded w-100">
+        {/* <div className="col rounded w-100">
           <input id="total_income" value={budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
         </div>
         <div className="col rounded w-100">
@@ -150,6 +150,15 @@ const Dashboard = ({ convertToMonthYear }) => {
         </div>
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details.selectedmonth === undefined  ? 0  : budget_details[budget_details.selectedmonth].expenses} className="form-control p-2 heading-input" readOnly />
+        </div> */}
+        <div className="col rounded w-100">
+          <label id="total_income" className="form-control p-2 heading-input"> {budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].income} </label>
+        </div>
+        <div className="col rounded w-100">
+        <label id="total_income" className="form-control p-2 heading-input">{budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].savings}</label>
+        </div>
+        <div className="col rounded w-100">
+          <label id="total_income" className="form-control p-2 heading-input">{budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].expenses}</label>
         </div>
       </div>
       <br />

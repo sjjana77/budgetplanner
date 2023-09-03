@@ -1,3 +1,21 @@
+u.heading-text{
+  font-weight: 700;
+}
+.selectt > div > div:nth-child(2) > div{
+  padding: 0px;
+}
+.selectt{
+  border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: none;
+  font-size: 12px;
+}
+.heading-grid{
+  font-weight: 600;
+}
+.bg-grid{
+  background: #3ed1d5;
+}
 .d-block:hover{
   opacity: 0.6 ;
 }
@@ -8,8 +26,7 @@
   margin-top: -6px;
 }
 #barChart {
-  height: 320px!important;
-  width: 100%!important;
+  width: 90% !important;
 }
 a:hover{
   text-decoration: none;
@@ -33,7 +50,8 @@ a{
 }
 .show_month{
   position: relative;
-    left: 48%;
+  top: 2px;
+    left: 35%;
     font-weight: 500;
 }
 .settings .row{
@@ -42,6 +60,9 @@ a{
 .delete{
   margin-top: 3px !important;
   margin: 0px;
+}
+.mt-9{
+  margin-top: 9px !important;
 }
 .mt-6{
   margin-top: 6px !important;
@@ -61,8 +82,8 @@ canvas{
 .heading-input[text]{
   font-size: 1vw;
 }
-.mt-6{
-  margin-top: 6px! important;
+.mt-2{
+  margin-top: 2px! important;
 }
 .w-15{
   width: 15%;
@@ -90,7 +111,7 @@ canvas{
 }
 .dashboard-icon{
   text-decoration: none;
-  font-size: 25px;
+  font-size: 28px;
   float: right;
   margin-left: 20px;
 }

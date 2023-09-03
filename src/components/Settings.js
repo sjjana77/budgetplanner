@@ -13,6 +13,10 @@ const Settings = ({ convertToMonthYear }) =>{
     }); 
     const [showModal, setShowModal] = useState(false);
     const [modalcontent,setmodalcontent] = useState('');
+    const [deleteitemvalue,setdeleteitemvalue] = useState({
+      type:'',
+      value:''
+    });
 
     const handleOpenModal = () => {
       setShowModal(true);
@@ -27,6 +31,7 @@ const Settings = ({ convertToMonthYear }) =>{
     const [suggestions_expense, setsuggestions_expense] = useState([]);
     const addsettings = (type) =>{
         if(type === "source"){
+          if(settingstmpvalue.source !== ""){
             const lowerCaseSourceOptions = budget_details.source_options.map(source => source.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.source.toLowerCase().trim())){
               setmodalcontent(`${settingstmpvalue.source} Already Present in Source`);
@@ -38,8 +43,10 @@ const Settings = ({ convertToMonthYear }) =>{
                 setbudget_details({...budget_details,source_options:tmp});
             }
             setsettingstmpvalue({...settingstmpvalue, source:''});
+          }
         }
         if(type === "saving"){
+          if(settingstmpvalue.saving !== ""){
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'S') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.saving.toLowerCase().trim())){
@@ -52,8 +59,10 @@ const Settings = ({ convertToMonthYear }) =>{
                 setbudget_details({...budget_details,budget_options:tmp});
             }
             setsettingstmpvalue({...settingstmpvalue, saving:''});
-        }
+            }
+          }
         if(type === "expense"){
+          if(settingstmpvalue.expense !== ""){
             const lowerCaseSourceOptions = budget_details.budget_options.filter(option => option.type === 'E') 
                                            .map(option => option.category.toLowerCase());
             if(lowerCaseSourceOptions.includes(settingstmpvalue.expense.toLowerCase().trim())){
@@ -66,6 +75,7 @@ const Settings = ({ convertToMonthYear }) =>{
                 setbudget_details({...budget_details,budget_options:tmp});
             }
             setsettingstmpvalue({...settingstmpvalue, expense:''});
+          }
         }
     }
     const renderAddButton = (type) => {
@@ -155,11 +165,19 @@ const Settings = ({ convertToMonthYear }) =>{
           handleOpenModal();
         }
         else{
+          if(budget_details.askdelete === "yes"){
+          setmodalcontent(`Are you sure you want to delete`);
+          setdeleteitemvalue({type:type,value:value});
+          handleOpenModal();
+          }
+          else{
           cc = {...budget_details};
           cc = cc.source_options;
           index = cc.indexOf(value);
           cc.splice(index,1);
           setbudget_details({...budget_details, source_options:cc});
+          }
+
         }
         setsettingstmpvalue({...settingstmpvalue,source:''});
         setsuggestions_source([]);
@@ -171,18 +189,25 @@ const Settings = ({ convertToMonthYear }) =>{
           handleOpenModal();
         }
         else{
-          cc = [...budget_details.budget_options];
-          const matchingEntries = cc.filter(option => (
-            option.type === 'E' && option.category === value
-          ));
-          if (matchingEntries.length > 0) {
-            index = cc.indexOf(matchingEntries[0]);
+          if(budget_details.askdelete === "yes"){
+            setmodalcontent(`Are you sure you want to delete`);
+            setdeleteitemvalue({type:type,value:value});
+            handleOpenModal();
           }
-          cc.splice(index,1);
-          setbudget_details({...budget_details, budget_options:cc});
-        }
-        setsettingstmpvalue({...settingstmpvalue,expense:''});
-        setsuggestions_expense([]);
+          else{
+            cc = [...budget_details.budget_options];
+            const matchingEntries = cc.filter(option => (
+              option.type === 'E' && option.category === value
+            ));
+            if (matchingEntries.length > 0) {
+              index = cc.indexOf(matchingEntries[0]);
+            }
+            cc.splice(index,1);
+            setbudget_details({...budget_details, budget_options:cc});
+          }
+          setsettingstmpvalue({...settingstmpvalue,expense:''});
+          setsuggestions_expense([]);
+          }
       }
       else{
         count = getCount(value, budget_details.savings_count);
@@ -191,15 +216,22 @@ const Settings = ({ convertToMonthYear }) =>{
           handleOpenModal();
         }
         else{
-          cc = [...budget_details.budget_options];
-          const matchingEntries = cc.filter(option => (
-            option.type === 'S' && option.category === value
-          ));
-          if (matchingEntries.length > 0) {
-            index = cc.indexOf(matchingEntries[0]);
+          if(budget_details.askdelete === "yes"){
+            setmodalcontent(`Are you sure you want to delete`);
+            setdeleteitemvalue({type:type,value:value});
+            handleOpenModal();
           }
-          cc.splice(index,1);
-          setbudget_details({...budget_details, budget_options:cc});
+          else{
+            cc = [...budget_details.budget_options];
+            const matchingEntries = cc.filter(option => (
+              option.type === 'S' && option.category === value
+            ));
+            if (matchingEntries.length > 0) {
+              index = cc.indexOf(matchingEntries[0]);
+            }
+            cc.splice(index,1);
+            setbudget_details({...budget_details, budget_options:cc});
+          }
         }
         setsettingstmpvalue({...settingstmpvalue,saving:''});
         setsuggestions_saving([]);
@@ -339,7 +371,11 @@ const Settings = ({ convertToMonthYear }) =>{
                 </div>
             </div>
             
-            <MyModal show={showModal} content={modalcontent} onClose={handleCloseModal} />
+            <MyModal
+            setsuggestions_source={setsuggestions_source}
+            setsuggestions_expense={setsuggestions_expense}
+            setsuggestions_saving={setsuggestions_saving}
+            deleteitemvalue={deleteitemvalue} setsettingstmpvalue={setsettingstmpvalue} settingstmpvalue={settingstmpvalue} show={showModal} content={modalcontent} onClose={handleCloseModal} />
 
         </div>
     )

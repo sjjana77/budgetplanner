@@ -46,11 +46,11 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       const filteredOptionss = options.filter((option) => !(sources.includes(option)));
       let tt = filteredOptionss.map((ele,i) => ({label:ele,value:ele}));
       if(e!==undefined && index!== undefined){
-        return <Select key={index} options={tt} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)} />;
+        return <Select className='selectt' key={index} options={tt} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)} />;
         
       }
       else{
-        return <Select options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
+        return <Select className='selectt' options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
       }
       // return filteredOptionss.map((ele,i) => (<option key={i} value={ele}>{ele}</option>))
     } 
@@ -189,21 +189,21 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
         <Link to="/source" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].income}</p>
         </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
         <Link to="/budget" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].savings}</p>
         </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
           <Link to="/budget" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "")  ? 0 : budget_details[budget_details.selectedmonth].expenses}</p>
           </Link>
         </div>
         </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
         </div>
@@ -213,19 +213,19 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].expenses} className="form-control p-2 heading-input" readOnly />
         </div>
-      </div>
+      </div> */}
     <br />
-      <div className="row m-0 text-white">
-        <div className="col-4 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+      <div className="row m-0 bg-grid heading-grid" style={{borderBottom: "1px solid white"}}>
+        <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Source</p>
         </div>
-        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Amount</p>
         </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded w-23">
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Percentage</p>
         </div>
-        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text p-2 d-flex justify-content-center">Action</p>
         </div>
       </div>
@@ -233,7 +233,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       selectedsource.length!==0 ? 
       (
       selectedsource.map((e,index)=>(
-        <div className='row m-0'>
+        <div className='row m-0 bg-grid'>
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           {/* <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
               <option value={e.source}>{e.source}</option>
@@ -243,16 +243,16 @@ const Sourceofincome = ({ convertToMonthYear }) => {
           {filteredOptionsdesign(e,index)}
           </div>
           <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-            <input name={e.source} type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onChange={changeIncome} onFocus={(e)=>{
+            <input name={e.source} type='number' className="mt-2 form-control mb-3 heading-input card-text heading-text" placeholder={"Amount of "+e.source} onChange={changeIncome} onFocus={(e)=>{
             if(e.target.value==="0"){
               e.target.value="";
             }
           }} value={e.income} />
           </div>
           <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
-            <input name={e.source} type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
+            <input name={e.source} type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
           </div>
-          <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
+          <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
           <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>
         </div>
@@ -263,7 +263,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     <>{setselectedsource([])}</>}
       
       {
-         <div id='newsource' className='row m-0' style={{display:"none"}}>
+         <div id='newsource' className='row m-0 bg-grid' style={{display:"none"}}>
          <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
          {/* <select value={newselectsource} className='form-select heading-input card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
           <option value="">Select Source</option>
@@ -272,10 +272,10 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         {filteredOptionsdesign()}
         </div>
         <div className="col-3 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
-        <input type='number' className="form-control mb-3 heading-input card-text heading-text" placeholder="Amount" id='' />
+        <input type='number' className="mt-2 form-control mb-3 heading-input card-text heading-text" placeholder="Amount" id='' />
         </div>
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
-            <input type='number' className="form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
+            <input type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
           </div>
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
           <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
@@ -283,7 +283,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         </div>
 
       }
-        <u className='text-primary ' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
       setcount(1);}}>+ Add New Type</u>
     </div>
   )

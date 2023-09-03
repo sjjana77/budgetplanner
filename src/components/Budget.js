@@ -30,20 +30,34 @@ const Budget = ({ convertToMonthYear }) => {
       let tt = filteredOptionss.map((ele,i) => ({label:ele.category,value:ele.category,type:ele.type}));
       // return filteredOptionss.map((ele,i) => (<option key={i} data-ctype={ele.type} value={ele.category}>{ele.category}</option>))
       if(e!==undefined && index!== undefined){
-        return <Select className='selectt text-black' key={index} options={tt} value={{label:e.category,value:e.category}} onChange={(ee)=>changeSelectValue(ee,index,e.category)} isSearchable  />;
+        return <Select
+        styles={{
+          control: (provided) => ({
+            ...provided,
+            minHeight: '30px', // Adjust the height as needed
+          }),
+        }}
+        className='selectt' key={index} options={tt} value={{label:e.category,value:e.category}} onChange={(ee)=>changeSelectValue(ee,index,e.category)} isSearchable  />;
         
       }
       else{
-        return <Select options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
+        return <Select
+        styles={{
+          control: (provided) => ({
+            ...provided,
+            minHeight: '30px', // Adjust the height as needed
+          }),
+        }}
+        className='selectt' options={[{label:"Select",value:""},...tt]} value="" onChange={addNewSource} placeholder="Select" />;
       }
-    } 
+    }
 
     const addNewSource = (e) =>{
         
         if(e.value!==""){
           document.getElementById("newsource").style.display = "none";
           // setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
-          console.log(e.type);
+          // console.log(e.type);
           let index,cc;
           if(e.type === "E"){
             index = budget_details.expenses_count.findIndex(item => item.name === e.value);
@@ -222,21 +236,21 @@ const Budget = ({ convertToMonthYear }) => {
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100">
         <Link to="/source" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].income}</p>
         </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
         <Link to="/budget" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].savings}</p>
         </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
           <Link to="/budget" className="d-block">
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "")  ? 0 : budget_details[budget_details.selectedmonth].expenses}</p>
           </Link>
         </div>
         </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].income} className="form-control p-2 heading-input" readOnly />
         </div>
@@ -246,22 +260,22 @@ const Budget = ({ convertToMonthYear }) => {
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details[budget_details.selectedmonth].expenses} className="form-control p-2 heading-input" readOnly />
         </div>
-      </div>
+      </div> */}
       <br />
-      <div className='row m-0 text-white'>
-      <div className="col-1 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+      <div className="row m-0 bg-grid heading-grid" style={{borderBottom: "1px solid white"}}>
+      <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center ">Type</p>
         </div>
-        <div className="col-4 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Category</p>
         </div>
-        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Amount</p>
         </div>
-        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-2 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Percentage</p>
         </div>
-        <div className="col-1 w-12 m-0 p-1 col-sm-4 col-md-2 bg-primary m-1 rounded">
+        <div className="col-1 w-12 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           <p className="card-text heading-text d-flex justify-content-center">Action</p>
         </div>
       </div>  
@@ -269,9 +283,9 @@ const Budget = ({ convertToMonthYear }) => {
       budget.length!==0 ? 
       (
         budget.map((e,index)=>(
-        <div className='row m-0'>
+        <div className='row m-0 bg-grid'>
             <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
-                <label className=' card-text heading-text mt-6 d-flex justify-content-center'>{e.type}</label>
+                <label className=' card-text heading-text mt-9 d-flex justify-content-center'>{e.type}</label>
             </div>
           <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
           {/* <select className='form-select card-text heading-text' aria-label="Default select example" key={index} value={e.category} onChange={(ee)=>changeSelectValue(ee,index,e.category)} >
@@ -281,14 +295,14 @@ const Budget = ({ convertToMonthYear }) => {
           {filteredOptionsdesign(e,index)}
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-            <input name={e.category} type='number' className="form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} onFocus={(e)=>{
+            <input name={e.category} type='number' className="mt-2 form-control p-1 mb-3 card-text heading-text" placeholder="Amount" value={e.amount} data-ctype={e.type} onChange={changeAmount} onFocus={(e)=>{
             if(e.target.value==="0"){
               e.target.value="";
             }
           }} />
           </div>
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
-            <input name={e.category} type='number' className="form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
+            <input name={e.category} type='number' className="mt-2 form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
           </div>
           <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category,e.type)}>
           <span className="mt-6"> <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></span>
@@ -301,9 +315,9 @@ const Budget = ({ convertToMonthYear }) => {
     <>{setbudget([])} </>  }
       
       {
-         <div id='newsource' className='row m-0' style={{display:"none"}}>
+         <div id='newsource' className='row m-0 bg-grid' style={{display:"none"}}>
           <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
-          <label className=' card-text heading-text d-flex justify-content-center mt-6'>S/E</label>
+          <label className=' card-text heading-text d-flex justify-content-center mt-9 delete'>S/E</label>
           </div>
          <div className="col-4 w-36 m-0 p-1 col-sm-4 col-md-2">
          {/* <select value={newselectsource} className='form-select card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
