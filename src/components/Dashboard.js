@@ -116,9 +116,9 @@ const Dashboard = ({ convertToMonthYear }) => {
         <h4 className='justify-content-center'>DASHBOARD</h4> 
         </div>
         <div className='col-4'>
-        <input className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
+        <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
         </div>
-        <div className='col-1' style={{position: "relative",left:"17%"}}>
+        <div className='col-2'>
         <Link to="/settings" className="dashboard-icon cursor-pointer justify-content-center" style={{position: "relative",top: "-7px",left: "4px"}}>
         <i className="fa fa-gear text-black "></i>
         </Link>
@@ -167,7 +167,7 @@ const Dashboard = ({ convertToMonthYear }) => {
       budget_details[budget_details.selectedmonth].selectedsource !== null ?
       budget_details[budget_details.selectedmonth].selectedsource.length !== 0 ?
 
-      <div className="Piechartt">
+      <div className="Piechartt" style={{border: "1px solid #198754"}}>
       <div className='card-text heading-text p-2 d-flex justify-content-center'> 
       <PieChartSource data={budget_details[budget_details.selectedmonth].selectedsource} />
       </div>
@@ -183,7 +183,7 @@ const Dashboard = ({ convertToMonthYear }) => {
 
       {(budget_details.selectedmonth !== null && budget_details.selectedmonth !== undefined && budget_details[budget_details.selectedmonth].budget !== null) ?
       budget_details[budget_details.selectedmonth].budget.filter(prev=>prev.type==="S").length!==0 ?
-            <div className="Piechartt">
+            <div className="Piechartt" style={{border: "1px solid #ffc107"}}>
             <div className='card-text heading-text p-2 d-flex justify-content-center'> 
             <PieChartSavings data={budget_details[budget_details.selectedmonth].budget.filter(prev=>prev.type==="S")} />
             </div>
@@ -196,7 +196,7 @@ const Dashboard = ({ convertToMonthYear }) => {
       }
       {(budget_details.selectedmonth !== null && budget_details.selectedmonth !== undefined && budget_details[budget_details.selectedmonth].budget !== null) ?
       budget_details[budget_details.selectedmonth].budget.filter(prev=>prev.type!=="S").length !==0 ?
-            <div className="Piechartt">
+            <div className="Piechartt" style={{border: "1px solid #dc3545"}}>
             <div className='card-text heading-text p-2 d-flex justify-content-center'> 
             <PieChartExpenses data={budget_details[budget_details.selectedmonth].budget.filter(prev=>prev.type!=="S")} />
             </div>

@@ -222,7 +222,7 @@ const Budget = ({ convertToMonthYear }) => {
       };
   return (
     <div className="container" style={usercss}>
-        <div className='row mt-2'>
+        <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Budget</h3>
         </div>

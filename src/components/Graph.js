@@ -28,6 +28,37 @@ const Graph = ({ convertToMonthYear }) =>{
 
         useEffect(() => {
           const ctx = document.getElementById('barChart')?.getContext('2d');
+          // const chartOptions = {
+          //   scales: {
+          //     x: {
+          //       beginAtZero: true,
+          //       ticks: {
+          //         font: {
+          //           size: 19, // Adjust the font size as needed
+          //         },
+          //       },
+          //     },
+          //     y: {
+          //       beginAtZero: true,
+          //     },
+          //   },
+          // };
+          const chartOptions = {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  font: {
+                    size: 16, // Adjust the font size as needed
+                  },
+                },
+              },
+            },
+          };
           if (chartRef.current) {
             chartRef.current.destroy();
           }
@@ -43,13 +74,7 @@ const Graph = ({ convertToMonthYear }) =>{
                   backgroundColor: getCategoryColor(category),
                 })),
               },
-              options: {
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                  },
-                },
-              },
+              options: chartOptions,
             });
           }
         }, [budget_details, months]);
