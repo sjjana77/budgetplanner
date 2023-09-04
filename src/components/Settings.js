@@ -3,6 +3,7 @@ import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
 import MyModal from './MyModal';
 
+
 const Settings = ({ convertToMonthYear }) =>{
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [settingstmpvalue,setsettingstmpvalue] = useState({
@@ -300,7 +301,7 @@ const Settings = ({ convertToMonthYear }) =>{
                   {suggestions_expense.map((item, index) => (
                     <div
                       key={index}
-                      className="suggestion-item"
+                      className="suggestion-item" style={{marginLeft:"0px"}}
                     >
                       {item}<span name='expense' onClick={()=>deleteitem('expenses',item)} className='close text-white'>x</span>
                     </div>

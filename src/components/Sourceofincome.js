@@ -103,7 +103,6 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         cc[index] = {name: value,count: cc[index].count-1};
       }
       setbudget_details({...budget_details,source_count:cc});
-
       for (let i = 0; i < tmp.length; i++) {
         let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
         tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
@@ -184,42 +183,70 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       fontSize: `${budget_details.fontsize}px`,
       color: `${budget_details.fontcolor}`,
     };
-    const handleSwipe = (value) => {
-      // Handle swipe action (e.g., delete the row)
-      console.log("jana");
-    };
-    const toggleSwipe = (index) => {
-      // Toggle the 'swiped' class to trigger the CSS animation
-      const updatedSelectedSource = [...selectedsource];
-      updatedSelectedSource[index].swiped = !updatedSelectedSource[index].swiped;
-      setselectedsource(updatedSelectedSource);
-    };
-    const [isSwiping, setIsSwiping] = useState(false);
-  const [startX, setStartX] = useState(null);
 
-  const handleTouchStart = (e) => {
+    const [isSwiping, setIsSwiping] = useState(false);
+    const [startX, setStartX] = useState(null);
+    const [animatecss,setanimatecss] = useState('0');
+
+  const handleTouchStart = (e,index) => {
+    setcurrentswipingrow(index);
+    setanimatecss('0');
     setStartX(e.touches[0].clientX);
   };
-
   const handleTouchMove = (e) => {
     if (!startX) return;
     const currentX = e.touches[0].clientX;
     const deltaX = currentX - startX;
+    if((deltaX < 0 ) && (deltaX > -80)){
 
-    if (Math.abs(deltaX) > 50) {
+      setanimatecss(deltaX);
+    }
+    if (deltaX < -80) {
       setIsSwiping(true);
     }
   };
-
-  const handleTouchEnd = (e) => {
+  
+  const handleTouchEnd = (e,value) => {
     if (isSwiping) {
       setIsSwiping(false);
       setcurrentswipingrow(e);
+      if(animatecss > -10){
+        setcurrentswipingrow('');
+      }
+      else{
+        setcurrentswipingrow(e);
+        setanimatecss('-450');
+        setcount(1);
+        let tmp = [...selectedsource];
+        let previncome = 0;
+        tmp = tmp.filter(prev => prev.source!==value);
+        let t = 0;
+        tmp.map(src => t+=parseInt(src.income));
+  
+        let index = budget_details.source_count.findIndex(item => item.name === value);
+        let cc = [...budget_details.source_count];
+        if(index !== -1){
+          cc[index] = {name: value,count: cc[index].count-1};
+        }
+        setbudget_details({...budget_details,source_count:cc});
+        for (let i = 0; i < tmp.length; i++) {
+          let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
+          tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
+        }
+        setselectedsource(tmp);
+        setcurrentswipingrow('');
+      }
+    }
+    else{
+      if(animatecss > -80){
+        setcurrentswipingrow('');
+      }
+
     }
   };
-    const swipeStyle = {
-      transform: isSwiping ? 'translateX(-100px)' : 'translateX(0)',
-    };
+   useEffect(()=>{
+    // console.log(animatecss);
+   },[animatecss])
   return (
     <div className="container" style={usercss}>
       <div className='row mt-3'>
@@ -279,11 +306,11 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       (
       selectedsource.map((e,index)=>(
         <div className={`m-0 bg-grid row swipe-list-item`} data-value={e.source}
-        onTouchStart={handleTouchStart}
+        onTouchStart={(e)=>handleTouchStart(e,index)}
         onTouchMove={handleTouchMove}
-        onTouchEnd={()=>handleTouchEnd(index)}
+        onTouchEnd={()=>handleTouchEnd(index,e.source)}
         style={{
-          transform: currentswipingrow === index ? 'translateX(-100px)' : 'translateX(0)'
+          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)'
         }} >
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           {/* <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
@@ -306,6 +333,15 @@ const Sourceofincome = ({ convertToMonthYear }) => {
           <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
           <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}} ></i>
           </div>
+          {currentswipingrow === index && (
+    <div className="delete-button">
+  
+          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+        </svg> 
+        </div>
+        )}
           {/* <div className="row-actions">
             <button onClick={() => handleSwipe(e.source)}>Delete</button>
           </div> */}
