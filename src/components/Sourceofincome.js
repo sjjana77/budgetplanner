@@ -3,6 +3,8 @@ import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom'; 
 import Select from 'react-select';
 import './style.css';
+// import { Swipeable } from 'react-swipeable'; 
+// import Swipeable from 'react-native-gesture-handler/Swipeable';
 // import icon_source from '../icons/sourceincome.png';
 // import icon_budget from '../icons/budget.png';
 
@@ -12,6 +14,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     const options = budget_details.source_options;
     const [selectedsource,setselectedsource] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
+    const [currentswipingrow,setcurrentswipingrow] = useState('');
     const calculateTotalIncome = () =>{
       let t = 0;
       selectedsource.map(src => t+=parseInt(src.income));
@@ -22,6 +25,12 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       tmp[budget_details.selectedmonth].income = t;
       setbudget_details(tmp);
     }
+    // const handleSwipe = (e, index, value) => {
+    //   if (e.dir === 'Left') {
+    //     // Handle swipe left action
+    //     deleteSelectedSource(value);
+    //   }
+    // };
     // const selectsources = () =>{
     //     const filteredOptions = options.filter((option) => selectedsource.includes(option));
     //     const filteredOptionsdesign = filteredOptions.map((ele,i) => (<option key={i} value={ele}>ele</option>));
@@ -175,6 +184,42 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       fontSize: `${budget_details.fontsize}px`,
       color: `${budget_details.fontcolor}`,
     };
+    const handleSwipe = (value) => {
+      // Handle swipe action (e.g., delete the row)
+      console.log("jana");
+    };
+    const toggleSwipe = (index) => {
+      // Toggle the 'swiped' class to trigger the CSS animation
+      const updatedSelectedSource = [...selectedsource];
+      updatedSelectedSource[index].swiped = !updatedSelectedSource[index].swiped;
+      setselectedsource(updatedSelectedSource);
+    };
+    const [isSwiping, setIsSwiping] = useState(false);
+  const [startX, setStartX] = useState(null);
+
+  const handleTouchStart = (e) => {
+    setStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!startX) return;
+    const currentX = e.touches[0].clientX;
+    const deltaX = currentX - startX;
+
+    if (Math.abs(deltaX) > 50) {
+      setIsSwiping(true);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (isSwiping) {
+      setIsSwiping(false);
+      setcurrentswipingrow(e);
+    }
+  };
+    const swipeStyle = {
+      transform: isSwiping ? 'translateX(-100px)' : 'translateX(0)',
+    };
   return (
     <div className="container" style={usercss}>
       <div className='row mt-3'>
@@ -233,7 +278,13 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       selectedsource.length!==0 ? 
       (
       selectedsource.map((e,index)=>(
-        <div className='row m-0 bg-grid'>
+        <div className={`m-0 bg-grid row swipe-list-item`} data-value={e.source}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={()=>handleTouchEnd(index)}
+        style={{
+          transform: currentswipingrow === index ? 'translateX(-100px)' : 'translateX(0)'
+        }} >
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           {/* <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
               <option value={e.source}>{e.source}</option>
@@ -253,9 +304,13 @@ const Sourceofincome = ({ convertToMonthYear }) => {
             <input name={e.source} type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
           </div>
           <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
-          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
+          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}} ></i>
           </div>
+          {/* <div className="row-actions">
+            <button onClick={() => handleSwipe(e.source)}>Delete</button>
+          </div> */}
         </div>
+        
       ))
       )  
       : <></>

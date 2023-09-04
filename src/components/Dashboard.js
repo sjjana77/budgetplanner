@@ -119,13 +119,13 @@ const Dashboard = ({ convertToMonthYear }) => {
         <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
         </div>
         <div className='col-2'>
-        <Link to="/settings" className="dashboard-icon cursor-pointer justify-content-center" style={{position: "relative",top: "-7px",left: "4px"}}>
+        <Link to="/settings" className="dashboard-icon cursor-pointer justify-content-center" style={{position: "relative",top: "-8px",left: "32px"}}>
         <i className="fa fa-gear text-black "></i>
         </Link>
         </div>
         </div>
         <div className="row text-white">
-        <div className="col bg-success m-3 rounded w-100" onmousedown="return false">
+        <div className="col bg-success m-3 rounded w-100" >
         <Link to="/source" className="d-block">
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
         </Link>
