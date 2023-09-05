@@ -16,7 +16,7 @@ function App() {
     return months[parseInt(month) - 1] + ' ' + year;
   }
   return (
-    <div className="App" style={{position: "fixed"}}>
+    <div className="App">
       <Router>
         <UserProvider>
           <Routes>

@@ -12,6 +12,9 @@ const Budget = ({ convertToMonthYear }) => {
     const options = budget_details.budget_options;
     const [budget,setbudget] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
+    const [currentswipingrow,setcurrentswipingrow] = useState('');
+    const [deleteindex,setdeleteindex] = useState('');
+    const [newsourcedisplay,setnewsourcedisplay] = useState(false);
 
     const getOptionLabel = (option) => {
       return (
@@ -55,7 +58,8 @@ const Budget = ({ convertToMonthYear }) => {
     const addNewSource = (e) =>{
         
         if(e.value!==""){
-          document.getElementById("newsource").style.display = "none";
+          setnewsourcedisplay(false);
+          // document.getElementById("newsource").style.display = "none";
           // setbudget(prev => [...prev,{type:e.target.options[e.target.selectedIndex].getAttribute("data-ctype"),category:e.target.value,percentage:0,amount:0}]);
           // console.log(e.type);
           let index,cc;
@@ -86,7 +90,9 @@ const Budget = ({ convertToMonthYear }) => {
           setbudget(prev => [...prev,{type:e.type,category:e.value,percentage:0,amount:0}]);
         }
     }
-    const deleteSelectedSource = (value,type) => {
+    const deleteSelectedSource = (value,type,ii) => {
+      setcurrentswipingrow(ii);
+      setanimatecss('-450');
       setcount(1);
       let index,cc;
       if(type === "E"){
@@ -98,7 +104,17 @@ const Budget = ({ convertToMonthYear }) => {
         else{
           cc.push({name:value,count:1});
         }
-        setbudget_details({...budget_details,expenses_count:cc});
+        setTimeout(() => {
+          setcurrentswipingrow(-1);
+          setdeleteindex(ii);
+        }, 200);
+        setTimeout(() => {
+          setdeleteindex(-1);
+          setbudget_details({...budget_details,expenses_count:cc});
+          setcurrentswipingrow('');
+          setbudget(() => budget.filter(prev => prev.category!==value));
+          //setanimatecss(0);
+        }, 300);
       }
       else{
         index = budget_details.savings_count.findIndex(item => item.name === value);
@@ -109,11 +125,20 @@ const Budget = ({ convertToMonthYear }) => {
         else{
           cc.push({name:value,count:1});
         }
-        setbudget_details({...budget_details,savings_count:cc});
+        setTimeout(() => {
+          setcurrentswipingrow(-1);
+          setdeleteindex(ii);
+        }, 200);
+        setTimeout(() => {
+          setdeleteindex(-1);
+          setbudget_details({...budget_details,savings_count:cc});
+          setcurrentswipingrow('');
+          setbudget(() => budget.filter(prev => prev.category!==value));
+          //setanimatecss(0);
+        }, 300);
       }
 
 
-      setbudget(() => budget.filter(prev => prev.category!==value));
     }
 
     const changeAmount = (e) =>{
@@ -220,6 +245,53 @@ const Budget = ({ convertToMonthYear }) => {
         fontSize: `${budget_details.fontsize}px`,
         color: `${budget_details.fontcolor}`,
       };
+      const [isSwiping, setIsSwiping] = useState(false);
+      const [startX, setStartX] = useState(null);
+      const [animatecss,setanimatecss] = useState('0');
+  
+    const handleTouchStart = (e,index) => {
+      setcurrentswipingrow(index);
+      setanimatecss('0');
+      setStartX(e.touches[0].clientX);
+    };
+    const handleTouchMove = (e) => {
+      if (!startX) return;
+      const currentX = e.touches[0].clientX;
+      const deltaX = currentX - startX;
+      if((deltaX < 0 ) && (deltaX > -80)){
+  
+        setanimatecss(deltaX);
+      }
+      if (deltaX < -80) {
+        setIsSwiping(true);
+      }
+    };
+    
+    const handleTouchEnd = (e,value,type) => {
+      if (isSwiping) {
+        setIsSwiping(false);
+        setcurrentswipingrow(e);
+        if(animatecss > -10){
+          setcurrentswipingrow('');
+        }
+        else{
+          if(value !== undefined){
+            deleteSelectedSource(value, type, e);
+          }
+          else{
+            setnewsourcedisplay(false);
+            setanimatecss(0);
+          }
+        }
+      }
+      else{
+        if(animatecss > -80){
+          setcurrentswipingrow('');
+        }
+  
+      }
+    };
+  
   return (
     <div className="container" style={usercss}>
         <div className='row mt-3'>
@@ -283,7 +355,15 @@ const Budget = ({ convertToMonthYear }) => {
       budget.length!==0 ? 
       (
         budget.map((e,index)=>(
-        <div className='row m-0 bg-grid'>
+        <div className='row m-0 bg-grid swipe-list-item'
+        onTouchStart={(e)=>handleTouchStart(e,index)}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={()=>handleTouchEnd(index,e.category,e.type)}
+        style={{
+          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)',
+          display : deleteindex === index ? 'none' : ''
+        }}
+        >
             <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
                 <label className=' card-text heading-text mt-9 d-flex justify-content-center'>{e.type}</label>
             </div>
@@ -307,6 +387,15 @@ const Budget = ({ convertToMonthYear }) => {
           <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category,e.type)}>
           <span className="mt-6"> <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></span>
           </div>
+          {currentswipingrow === index && (
+          <div className="delete-button">
+  
+          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+        </svg> 
+        </div>
+        )}
         </div>
       ))
       )
@@ -315,7 +404,15 @@ const Budget = ({ convertToMonthYear }) => {
     <>{setbudget([])} </>  }
       
       {
-         <div id='newsource' className='row m-0 bg-grid' style={{display:"none"}}>
+         <div id='newsource' className='row m-0 bg-grid'
+         onTouchStart={(e)=>handleTouchStart(e)}
+         onTouchMove={handleTouchMove}
+         onTouchEnd={handleTouchEnd}
+         style={{
+           transform: (currentswipingrow===-1 || currentswipingrow==='') && !newsourcedisplay ? 'translateX('+animatecss+'px)' : 'translateX(0px)',
+           display: newsourcedisplay ? "flex" : "none"
+         }}
+         >
           <div className="col-1 w-11 m-0 p-1 col-sm-4 col-md-2">
           <label className=' card-text heading-text d-flex justify-content-center mt-9 delete'>S/E</label>
           </div>
@@ -326,20 +423,29 @@ const Budget = ({ convertToMonthYear }) => {
           </select> */}
           {filteredOptionsdesign()}
         </div>
-        <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
+        <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2" >
         <input type='number' className="form-control card-text heading-text mb-3 pe-none" placeholder="Amount" id='' />
         </div>
 
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
         <input type='number' className="form-control p-1 card-text heading-text mb-3 pe-none" placeholder="%" id='' />
         </div>
-        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
+        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={()=>setnewsourcedisplay(false)}>
         <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>
+          
+          <div className="delete-button">
+  
+          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+        </svg> 
+        </div>
+        
         </div>
 
       }
-        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{setanimatecss(0);setnewsourcedisplay(true);
       setcount(1);}}>+ Add New Type</u>
     </div>
   )

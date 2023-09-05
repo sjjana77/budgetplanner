@@ -15,6 +15,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     const [selectedsource,setselectedsource] = useState([]);
     const [newselectsource,setnewselectsource] = useState('');
     const [currentswipingrow,setcurrentswipingrow] = useState('');
+    const [deleteindex,setdeleteindex] = useState('');
     const calculateTotalIncome = () =>{
       let t = 0;
       selectedsource.map(src => t+=parseInt(src.income));
@@ -89,7 +90,9 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       tmp.splice(index,1,{source:e.value, income: 0, percent: ""});
       setselectedsource(tmp);
     }
-    const deleteSelectedSource = (value) => {
+    const deleteSelectedSource = (value,ii) => {
+      setcurrentswipingrow(ii);
+      setanimatecss('-450');
       setcount(1);
       let tmp = [...selectedsource];
       let previncome = 0;
@@ -107,7 +110,15 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
         tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
       }
-      setselectedsource(tmp);
+      // setselectedsource(tmp);
+      setTimeout(() => {
+        setcurrentswipingrow(-1);
+        setdeleteindex(ii);
+      }, 200);
+      setTimeout(() => {
+        setdeleteindex(-1);
+        setselectedsource(tmp);
+      }, 300);
     }
     const changeIncome = (e) =>{
       setcount(1);
@@ -214,27 +225,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         setcurrentswipingrow('');
       }
       else{
-        setcurrentswipingrow(e);
-        setanimatecss('-450');
-        setcount(1);
-        let tmp = [...selectedsource];
-        let previncome = 0;
-        tmp = tmp.filter(prev => prev.source!==value);
-        let t = 0;
-        tmp.map(src => t+=parseInt(src.income));
-  
-        let index = budget_details.source_count.findIndex(item => item.name === value);
-        let cc = [...budget_details.source_count];
-        if(index !== -1){
-          cc[index] = {name: value,count: cc[index].count-1};
-        }
-        setbudget_details({...budget_details,source_count:cc});
-        for (let i = 0; i < tmp.length; i++) {
-          let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
-          tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
-        }
-        setselectedsource(tmp);
-        setcurrentswipingrow('');
+        deleteSelectedSource(value,e);
       }
     }
     else{
@@ -244,9 +235,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
 
     }
   };
-   useEffect(()=>{
-    // console.log(animatecss);
-   },[animatecss])
+
   return (
     <div className="container" style={usercss}>
       <div className='row mt-3'>
@@ -305,12 +294,13 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       selectedsource.length!==0 ? 
       (
       selectedsource.map((e,index)=>(
-        <div className={`m-0 bg-grid row swipe-list-item`} data-value={e.source}
+        <div className={`row m-0 bg-grid swipe-list-item`} data-value={e.source}
         onTouchStart={(e)=>handleTouchStart(e,index)}
         onTouchMove={handleTouchMove}
         onTouchEnd={()=>handleTouchEnd(index,e.source)}
         style={{
-          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)'
+          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)',
+          display : deleteindex === index ? 'none' : ''
         }} >
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
           {/* <select className='form-select heading-input card-text heading-text' aria-label="Default select example" key={index} value={e.source} onChange={(ee)=>changeSelectValue(ee,index,e.source)} >
@@ -330,7 +320,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
           <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input name={e.source} type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
           </div>
-          <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source)}>
+          <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source,index)}>
           <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}} ></i>
           </div>
           {currentswipingrow === index && (

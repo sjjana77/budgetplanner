@@ -1,4 +1,7 @@
 /* CSS */
+.swiped {
+  transform: translateX(-450px); /* Adjust this value to match your swipe distance */
+}
 .swipe-list-item {
   transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
   position: relative;
