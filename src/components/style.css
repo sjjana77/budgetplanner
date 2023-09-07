@@ -1,4 +1,11 @@
-/* CSS */
+.move{
+  animation: mymove 1s 1;
+  /* background: #3ed1d5; */
+}
+@keyframes mymove {
+  from {transform: translateX(-450px);}
+  to {transform: translateX(0);}
+}
 .swiped {
   transform: translateX(-450px); /* Adjust this value to match your swipe distance */
 }

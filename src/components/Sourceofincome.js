@@ -16,6 +16,8 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     const [newselectsource,setnewselectsource] = useState('');
     const [currentswipingrow,setcurrentswipingrow] = useState('');
     const [deleteindex,setdeleteindex] = useState('');
+    const [newsourcedisplay,setnewsourcedisplay] = useState(false);
+
     const calculateTotalIncome = () =>{
       let t = 0;
       selectedsource.map(src => t+=parseInt(src.income));
@@ -56,7 +58,10 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       const filteredOptionss = options.filter((option) => !(sources.includes(option)));
       let tt = filteredOptionss.map((ele,i) => ({label:ele,value:ele}));
       if(e!==undefined && index!== undefined){
-        return <Select className='selectt' key={index} options={tt} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)} />;
+        return <Select
+        className='selectt' key={index} options={tt} value={{label:e.source,value:e.source}} onChange={(ee)=>changeSelectValue(ee,index,e.source)}
+        
+        />;
         
       }
       else{
@@ -112,11 +117,12 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       }
       // setselectedsource(tmp);
       setTimeout(() => {
-        setcurrentswipingrow(-1);
+        setcurrentswipingrow('');
         setdeleteindex(ii);
       }, 200);
       setTimeout(() => {
-        setdeleteindex(-1);
+        setdeleteindex('');
+        setcurrentswipingrow('');
         setselectedsource(tmp);
       }, 300);
     }
@@ -208,24 +214,42 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     if (!startX) return;
     const currentX = e.touches[0].clientX;
     const deltaX = currentX - startX;
-    if((deltaX < 0 ) && (deltaX > -80)){
-
+    if((deltaX < -14 ) && (deltaX > -80)){
+      document.getElementById("root").style.position = "fixed";
       setanimatecss(deltaX);
     }
     if (deltaX < -80) {
       setIsSwiping(true);
     }
   };
-  
+
+  // useEffect(()=>{
+  //   console.log(animatecss);
+  // },[animatecss]);
+
   const handleTouchEnd = (e,value) => {
     if (isSwiping) {
       setIsSwiping(false);
+
       setcurrentswipingrow(e);
       if(animatecss > -10){
         setcurrentswipingrow('');
       }
       else{
-        deleteSelectedSource(value,e);
+        if(value !== undefined){
+          deleteSelectedSource(value, e);
+        }
+          
+        else{
+          setanimatecss(-450);
+          setcurrentswipingrow(-1);
+          setTimeout(() => {
+            setnewsourcedisplay(false);
+            setanimatecss(0);
+          }, 150);
+        }
+        document.getElementById("root").style.position = "";
+        // deleteSelectedSource(value,e);
       }
     }
     else{
@@ -299,7 +323,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={()=>handleTouchEnd(index,e.source)}
         style={{
-          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)',
+          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : '',
           display : deleteindex === index ? 'none' : ''
         }} >
           <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
@@ -321,14 +345,14 @@ const Sourceofincome = ({ convertToMonthYear }) => {
             <input name={e.source} type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%" value={e.percent} />
           </div>
           <div className="col-1 mt-9 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>deleteSelectedSource(e.source,index)}>
-          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}} ></i>
+          <i className="fa fa-trash-o"  style={{fontSize:"5vw",marginRight:"6px",marginTop:"10px"}} ></i>
           </div>
           {currentswipingrow === index && (
-    <div className="delete-button">
+          <div className="delete-button">
   
-          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
-          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
-          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+          <svg className="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path className="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fillRule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path className="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
         </svg> 
         </div>
         )}
@@ -344,7 +368,15 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     <>{setselectedsource([])}</>}
       
       {
-         <div id='newsource' className='row m-0 bg-grid' style={{display:"none"}}>
+         <div id='newsource' className='row m-0 bg-grid swipe-list-item' 
+         onTouchStart={(e)=>handleTouchStart(e,-1)}
+         onTouchMove={handleTouchMove}
+         onTouchEnd={handleTouchEnd}
+         style={{
+           transform: currentswipingrow===-1 ? 'translateX('+animatecss+'px)' : '',
+           display: newsourcedisplay ? "flex" : "none"
+         }}
+         >
          <div className="col-4 m-0 p-1 col-sm-4 col-md-2 m-1 rounded">
          {/* <select value={newselectsource} className='form-select heading-input card-text heading-text' aria-label="Default select example" onChange={addNewSource}>
           <option value="">Select Source</option>
@@ -358,14 +390,33 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
           </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>document.getElementById("newsource").style.display="none"}>
-          <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>{
+          setcurrentswipingrow(-1);
+          setanimatecss(-450);
+          setTimeout(() => {
+            document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
+            setnewsourcedisplay(false);
+          }, 150);
+        }}>
+          <i className="fa fa-trash-o" style={{fontSize:"5vw",marginRight:"6px",marginTop:"10px"}}></i>
           </div>
+          <div className="delete-button">
+  
+          <svg className="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path className="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fillRule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path className="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+        </svg> 
+        </div>
         </div>
 
       }
-        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{document.getElementById("newsource").style.display="flex";
-      setcount(1);}}>+ Add New Type</u>
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{
+          document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
+          document.getElementById("newsource").style.display = "flex";
+          setanimatecss(0);
+          setnewsourcedisplay(true);
+          setcount(1);
+          }}>+ Add New Type</u>
     </div>
   )
 }

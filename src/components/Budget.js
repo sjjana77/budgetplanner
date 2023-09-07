@@ -105,11 +105,11 @@ const Budget = ({ convertToMonthYear }) => {
           cc.push({name:value,count:1});
         }
         setTimeout(() => {
-          setcurrentswipingrow(-1);
+          setcurrentswipingrow('');
           setdeleteindex(ii);
         }, 200);
         setTimeout(() => {
-          setdeleteindex(-1);
+          setdeleteindex('');
           setbudget_details({...budget_details,expenses_count:cc});
           setcurrentswipingrow('');
           setbudget(() => budget.filter(prev => prev.category!==value));
@@ -126,7 +126,7 @@ const Budget = ({ convertToMonthYear }) => {
           cc.push({name:value,count:1});
         }
         setTimeout(() => {
-          setcurrentswipingrow(-1);
+          setcurrentswipingrow('');
           setdeleteindex(ii);
         }, 200);
         setTimeout(() => {
@@ -258,8 +258,8 @@ const Budget = ({ convertToMonthYear }) => {
       if (!startX) return;
       const currentX = e.touches[0].clientX;
       const deltaX = currentX - startX;
-      if((deltaX < 0 ) && (deltaX > -80)){
-  
+      if((deltaX < -14 ) && (deltaX > -80)){
+        document.getElementById("root").style.position = "fixed";
         setanimatecss(deltaX);
       }
       if (deltaX < -80) {
@@ -279,9 +279,16 @@ const Budget = ({ convertToMonthYear }) => {
             deleteSelectedSource(value, type, e);
           }
           else{
-            setnewsourcedisplay(false);
-            setanimatecss(0);
+            setanimatecss(-450);
+            setcurrentswipingrow(-1);
+            setTimeout(() => {
+              setnewsourcedisplay(false);
+              document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
+              setanimatecss(0);
+            }, 150);
           }
+          document.getElementById("root").style.position = "";
+
         }
       }
       else{
@@ -360,7 +367,7 @@ const Budget = ({ convertToMonthYear }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={()=>handleTouchEnd(index,e.category,e.type)}
         style={{
-          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : 'translateX(0)',
+          transform: currentswipingrow === index ? 'translateX('+animatecss+'px)' : '',
           display : deleteindex === index ? 'none' : ''
         }}
         >
@@ -384,15 +391,15 @@ const Budget = ({ convertToMonthYear }) => {
           <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
             <input name={e.category} type='number' className="mt-2 form-control p-1 mb-3 pe-none card-text heading-text" placeholder="%" data-ctype={e.type} value={e.percentage} />
           </div>
-          <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category,e.type)}>
+          <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center card-text heading-text" onClick={()=>deleteSelectedSource(e.category,e.type,index)}>
           <span className="mt-6"> <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i></span>
           </div>
           {currentswipingrow === index && (
           <div className="delete-button">
   
-          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
-          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
-          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+          <svg className="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path className="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path className="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
         </svg> 
         </div>
         )}
@@ -404,12 +411,12 @@ const Budget = ({ convertToMonthYear }) => {
     <>{setbudget([])} </>  }
       
       {
-         <div id='newsource' className='row m-0 bg-grid'
-         onTouchStart={(e)=>handleTouchStart(e)}
+         <div id='newsource' className='row m-0 bg-grid swipe-list-item'
+         onTouchStart={(e)=>handleTouchStart(e,-1)}
          onTouchMove={handleTouchMove}
          onTouchEnd={handleTouchEnd}
          style={{
-           transform: (currentswipingrow===-1 || currentswipingrow==='') && !newsourcedisplay ? 'translateX('+animatecss+'px)' : 'translateX(0px)',
+           transform: (currentswipingrow===-1 ) ? 'translateX('+animatecss+'px)' : '',
            display: newsourcedisplay ? "flex" : "none"
          }}
          >
@@ -430,23 +437,34 @@ const Budget = ({ convertToMonthYear }) => {
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
         <input type='number' className="form-control p-1 card-text heading-text mb-3 pe-none" placeholder="%" id='' />
         </div>
-        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={()=>setnewsourcedisplay(false)}>
+        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={()=>{
+          setcurrentswipingrow(-1);
+          setanimatecss(-450);
+          setTimeout(() => {
+            document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
+            setnewsourcedisplay(false);
+          }, 150);
+        }}>
         <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>
           
           <div className="delete-button">
   
-          <svg class="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
-          <path class="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
-          <path class="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
+          <svg className="icon-trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="40" height="40">
+          <path className="trash-lid" style={{transform : (Math.abs(animatecss) > 22 && Math.abs(animatecss) < 52) ? "translateY(-2px) rotate("+(Math.abs(animatecss)-18)+"deg)" : "transform: translateY(-2px) rotate(30deg)"}} fill-rule="evenodd" d="M6 15l4 0 0-3 8 0 0 3 4 0 0 2 -16 0zM12 14l4 0 0 1 -4 0z" />
+          <path className="trash-can" d="M8 17h2v9h8v-9h2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" />
         </svg> 
         </div>
         
         </div>
 
       }
-        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{setanimatecss(0);setnewsourcedisplay(true);
-      setcount(1);}}>+ Add New Type</u>
+        <u className='text-primary heading-text' id='addnewsource' onClick={()=>{
+          document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
+          setanimatecss(0);
+          setnewsourcedisplay(true);
+          setcount(1);
+          }}>+ Add New Type</u>
     </div>
   )
 }
