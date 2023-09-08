@@ -6,14 +6,31 @@ import PieChartExpenses from './PieChartExpenses';
 import PieChartSavings from './PieChartSavings';
 import Graph from  './Graph';
 import './style.css';
+import { useNavigate } from 'react-router-dom';
 import { Chart } from 'chart.js/auto';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
 
-const Dashboard = ({ convertToMonthYear }) => {
+const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
   const { budget_details, setbudget_details } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  // const handleClick = (event,page) => {
+  //   event.preventDefault();
+  //   document.getElementById("dashboard").classList = "container dashboard exitingparentcomponent";
+  //   setTimeout(() => {
+  //     navigate('/'+page);
+  //   }, 6000);
+    
+  // }
 
   useEffect(() => {
+    if(history!==""){
+      document.getElementById("dashboard").classList = 'container dashboard openingparentcomponent';
+    }
+    else{
+      document.getElementById("dashboard").classList = 'container dashboard first';
+    }
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth() + 1;
     let currentYear = currentDate.getFullYear();
@@ -75,6 +92,7 @@ const Dashboard = ({ convertToMonthYear }) => {
         });
       }
     }
+    console.log(history);
   }, []);
 
   const changemonth = (e) => {
@@ -114,35 +132,54 @@ const Dashboard = ({ convertToMonthYear }) => {
       <div className='row mt-3'>
         <div className='col-5'>
         <h4 className='justify-content-center'>DASHBOARD</h4> 
-        <button onClick={()=>{
-          document.getElementById("dashboard").classList = "container dashboard dashboardto";
-          setTimeout(() => {
-          document.getElementById("income_page").click();
-          }, 10);
-          }}>Click it</button>
         </div>
         <div className='col-4'>
         <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
         </div>
         <div className='col-2'>
-        <Link to="/settings" className="dashboard-icon cursor-pointer justify-content-center" style={{position: "relative",top: "-8px",left: "32px"}}>
+        <Link to="/settings" onClick={(e)=>{
+          e.preventDefault();
+          document.querySelector('.sss').style.transform = "rotate(45deg)";
+          setTimeout(() => {
+            sethistory('settings')
+            navigate('/settings');
+          }, 100);
+          }} className="dashboard-icon cursor-pointer justify-content-center sss" style={{position: "relative",top: "-8px",left: "32px"}}>
         <i className="fa fa-gear text-black "></i>
         </Link>
         </div>
         </div>
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100" >
-        <Link to="/source" className="d-block" id='income_page'>
+        <Link to="/source" className="d-block" id='income_page' onClick={(e)=>{
+          e.preventDefault();
+          setTimeout(() => {
+            sethistory('source')
+            navigate('/source');
+          }, 10);
+          }}>
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
         </Link>
         </div>
         <div className="col bg-warning m-3 rounded w-100">
-        <Link to="/budget" className="d-block">
+        <Link to="/budget" className="d-block" onClick={(e)=>{
+          e.preventDefault();
+          setTimeout(() => {
+            sethistory('budget')
+            navigate('/budget');
+          }, 10);
+          }}>
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
         </Link>
         </div>
         <div className="col bg-danger m-3 rounded w-100">
-          <Link to="/budget" className="d-block">
+          <Link to="/budget" className="d-block" onClick={(e)=>{
+          e.preventDefault();
+          setTimeout(() => {
+            sethistory('budget')
+            navigate('/budget');
+          }, 10);
+          }}>
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
           </Link>
         </div>

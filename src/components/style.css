@@ -1,12 +1,35 @@
-.sourceofincomefrom{
-  animation: sourceofincomefrom 0.5s 1;
+.sss{
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
 }
-.sourceofincometo{
-  
+@keyframes zoomOut {
+  0% {
+      transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
+  }
 }
-.dashboardto{
-  animation: dashboardto 0.5s 1;
+
+.first {
+
+  transform-origin: center;
+  animation: zoomOut 1s ease-in-out forwards 1; /* Adjust animation duration as needed */
 }
+.openingparentcomponent{
+  animation: openingparentcomponent 0.5s 1;
+}
+@keyframes openingparentcomponent {
+  from {transform: translateX(-450px);}
+  to {transform: translateX(0);}
+}
+.openingchildcomponents{
+  animation: openingchildcomponents 0.5s 1;
+}
+
+/* .exitingparentcomponent{
+  animation: exitingparentcomponent 0.5s 1;
+} */
 .move{
   animation: mymove 1s 1;
   /* background: #3ed1d5; */
@@ -15,11 +38,11 @@
   from {transform: translateX(-450px);}
   to {transform: translateX(0);}
 }
-@keyframes dashboardto {
+/* @keyframes parentcomponent {
   from {transform: translateX(0);}
   to {transform: translateX(-450px);}
-}
-@keyframes sourceofincomefrom {
+} */
+@keyframes openingchildcomponents {
   from {transform: translateX(450px);}
   to {transform: translateX(0);}
 }

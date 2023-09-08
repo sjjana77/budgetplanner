@@ -6,7 +6,7 @@ import Select from 'react-select';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
 
-const Budget = ({ convertToMonthYear }) => {
+const Budget = ({ convertToMonthYear, history, sethistory  }) => {
     const { budget_details, setbudget_details } = useContext(UserContext);
     const [count,setcount] = useState(0);
     const options = budget_details.budget_options;
@@ -300,7 +300,7 @@ const Budget = ({ convertToMonthYear }) => {
     };
   
   return (
-    <div className="container" style={usercss}>
+    <div className="container openingchildcomponents" style={usercss}>
         <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Budget</h3>

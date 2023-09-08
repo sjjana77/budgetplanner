@@ -7,6 +7,7 @@ import { useState } from "react";
 import { UserProvider } from './UserContext';
 
 function App() {
+  const [history,sethistory] = useState('');
   function convertToMonthYear(date) {
     const [year, month] = date.split('-');
     const months = [
@@ -20,10 +21,10 @@ function App() {
       <Router>
         <UserProvider>
           <Routes>
-            <Route path="/" element={<Dashboard convertToMonthYear={convertToMonthYear} />} /> 
-            <Route path="/source" element={<Sourceofincome convertToMonthYear={convertToMonthYear} />} />
-            <Route path="/budget" element={<Budget convertToMonthYear={convertToMonthYear} />} />
-            <Route path="/settings" element={<Settings convertToMonthYear={convertToMonthYear} />} />
+            <Route path="/" element={<Dashboard history={history} sethistory={sethistory} convertToMonthYear={convertToMonthYear} />} /> 
+            <Route path="/source" element={<Sourceofincome history={history} sethistory={sethistory} convertToMonthYear={convertToMonthYear} />} />
+            <Route path="/budget" element={<Budget history={history} sethistory={sethistory} convertToMonthYear={convertToMonthYear} />} />
+            <Route path="/settings" element={<Settings history={history} sethistory={sethistory} convertToMonthYear={convertToMonthYear} />} />
           </Routes>
         </UserProvider>
       </Router>

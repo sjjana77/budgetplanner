@@ -261,7 +261,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
   };
 
   return (
-    <div className="container sourceofincome sourceofincomefrom" id='sourceofincome' style={usercss}>
+    <div className="container sourceofincome openingchildcomponents" id='sourceofincome' style={usercss}>
       <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Source of Income</h3>

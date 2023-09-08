@@ -247,7 +247,7 @@ const Settings = ({ convertToMonthYear }) =>{
       return 0; 
     }
     return(
-        <div className='settings container mt-4' style={usercss}>
+        <div className='settings container mt-4 openingchildcomponents' style={usercss}>
         <div className='row mt-2'>
             <div className='col'>
             <h3 className=''>Settings</h3>
