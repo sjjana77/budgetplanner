@@ -110,10 +110,16 @@ const Dashboard = ({ convertToMonthYear }) => {
 
 
   return (
-    <div className="container" style={usercss}>
+    <div className="container dashboard" id='dashboard' style={usercss}>
       <div className='row mt-3'>
         <div className='col-5'>
         <h4 className='justify-content-center'>DASHBOARD</h4> 
+        <button onClick={()=>{
+          document.getElementById("dashboard").classList = "container dashboard dashboardto";
+          setTimeout(() => {
+          document.getElementById("income_page").click();
+          }, 10);
+          }}>Click it</button>
         </div>
         <div className='col-4'>
         <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
@@ -126,7 +132,7 @@ const Dashboard = ({ convertToMonthYear }) => {
         </div>
         <div className="row text-white">
         <div className="col bg-success m-3 rounded w-100" >
-        <Link to="/source" className="d-block" id='kk'>
+        <Link to="/source" className="d-block" id='income_page'>
           <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
         </Link>
         </div>

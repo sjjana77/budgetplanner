@@ -258,7 +258,7 @@ const Budget = ({ convertToMonthYear }) => {
       if (!startX) return;
       const currentX = e.touches[0].clientX;
       const deltaX = currentX - startX;
-      if((deltaX < -14 ) && (deltaX > -80)){
+      if((deltaX < -3 ) && (deltaX > -80)){
         document.getElementById("root").style.position = "fixed";
         setanimatecss(deltaX);
       }

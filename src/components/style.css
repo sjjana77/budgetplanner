@@ -1,9 +1,26 @@
+.sourceofincomefrom{
+  animation: sourceofincomefrom 0.5s 1;
+}
+.sourceofincometo{
+  
+}
+.dashboardto{
+  animation: dashboardto 0.5s 1;
+}
 .move{
   animation: mymove 1s 1;
   /* background: #3ed1d5; */
 }
 @keyframes mymove {
   from {transform: translateX(-450px);}
+  to {transform: translateX(0);}
+}
+@keyframes dashboardto {
+  from {transform: translateX(0);}
+  to {transform: translateX(-450px);}
+}
+@keyframes sourceofincomefrom {
+  from {transform: translateX(450px);}
   to {transform: translateX(0);}
 }
 .swiped {

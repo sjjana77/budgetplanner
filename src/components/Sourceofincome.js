@@ -214,7 +214,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
     if (!startX) return;
     const currentX = e.touches[0].clientX;
     const deltaX = currentX - startX;
-    if((deltaX < -14 ) && (deltaX > -80)){
+    if((deltaX < -3 ) && (deltaX > -80)){
       document.getElementById("root").style.position = "fixed";
       setanimatecss(deltaX);
     }
@@ -261,7 +261,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
   };
 
   return (
-    <div className="container" style={usercss}>
+    <div className="container sourceofincome sourceofincomefrom" id='sourceofincome' style={usercss}>
       <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Source of Income</h3>
