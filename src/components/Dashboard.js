@@ -29,7 +29,7 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
       document.getElementById("dashboard").classList = 'container dashboard openingparentcomponent';
     }
     else{
-      document.getElementById("dashboard").classList = 'container dashboard first';
+      // document.getElementById("dashboard").classList = 'container dashboard';
     }
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth() + 1;
@@ -92,7 +92,7 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
         });
       }
     }
-    console.log(history);
+    
   }, []);
 
   const changemonth = (e) => {
@@ -128,7 +128,7 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
 
 
   return (
-    <div className="container dashboard" id='dashboard' style={usercss}>
+    <div className="container dashboard first" id='dashboard' style={usercss}>
       <div className='row mt-3'>
         <div className='col-5'>
         <h4 className='justify-content-center'>DASHBOARD</h4> 
