@@ -128,7 +128,7 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
 
 
   return (
-    <div className="container dashboard first" id='dashboard' style={usercss}>
+    <div className="container dashboard" id='dashboard' style={usercss}>
       <div className='row mt-3'>
         <div className='col-5'>
         <h4 className='justify-content-center'>DASHBOARD</h4> 

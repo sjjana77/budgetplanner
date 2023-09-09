@@ -4,6 +4,7 @@ import Sourceofincome from "./components/Sourceofincome";
 import Budget from './components/Budget';
 import Settings from './components/Settings';
 import { useState } from "react";
+import './components/style.css';
 import { UserProvider } from './UserContext';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
     return months[parseInt(month) - 1] + ' ' + year;
   }
   return (
-    <div className="App">
+    <div className="App first">
       <Router>
         <UserProvider>
           <Routes>
