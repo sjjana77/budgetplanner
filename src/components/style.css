@@ -1,3 +1,21 @@
+.settings-add-btn{
+  border-radius: 25px;
+  position: relative;
+  animation: settings-add-btn 0.3s linear 1;
+}
+@keyframes settings-add-btn {
+  from{left: 100%;}
+  to{left: 0%;}
+}
+.close_add_btn{
+  border-radius: 25px;
+  position: relative;
+  animation: close_add_btn 0.3s linear 1;
+}
+@keyframes close_add_btn {
+  from{left: 0%;}
+  to{left: 100%;display: none;}
+}
 .sss{
   transition: transform 0.3s ease;
   transform: rotate(0deg);

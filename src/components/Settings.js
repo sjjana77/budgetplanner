@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
 import MyModal from './MyModal';
-
+import './style.css';
 
 const Settings = ({ convertToMonthYear }) =>{
     const { budget_details, setbudget_details } = useContext(UserContext);
@@ -43,7 +43,10 @@ const Settings = ({ convertToMonthYear }) =>{
                 tmp.push(settingstmpvalue.source.trim());
                 setbudget_details({...budget_details,source_options:tmp});
             }
-            setsettingstmpvalue({...settingstmpvalue, source:''});
+            document.getElementById("source_btn").classList = "btn btn-primary close_add_btn";
+            setTimeout(() => {
+              setsettingstmpvalue({...settingstmpvalue, source:''});  
+            }, 300);
           }
         }
         if(type === "saving"){
@@ -59,7 +62,10 @@ const Settings = ({ convertToMonthYear }) =>{
                 tmp.push({type:'S',category: settingstmpvalue.saving.trim()});
                 setbudget_details({...budget_details,budget_options:tmp});
             }
-            setsettingstmpvalue({...settingstmpvalue, saving:''});
+            document.getElementById("saving_btn").classList = "btn btn-primary close_add_btn";
+            setTimeout(() => {
+              setsettingstmpvalue({...settingstmpvalue, saving:''});  
+            }, 300);
             }
           }
         if(type === "expense"){
@@ -75,14 +81,17 @@ const Settings = ({ convertToMonthYear }) =>{
                 tmp.push({type:'E',category: settingstmpvalue.expense.trim()});
                 setbudget_details({...budget_details,budget_options:tmp});
             }
-            setsettingstmpvalue({...settingstmpvalue, expense:''});
+            document.getElementById("expense_btn").classList = "btn btn-primary close_add_btn";
+            setTimeout(() => {
+              setsettingstmpvalue({...settingstmpvalue, expense:''});  
+            }, 300);
           }
         }
     }
     const renderAddButton = (type) => {
         if (settingstmpvalue[type]) {
           return (
-            <button className="btn btn-primary" onClick={() => addsettings(type)}>
+            <button id={type+"_btn"} className="btn btn-primary settings-add-btn" onClick={() => addsettings(type)}>
               Add
             </button>
           );
@@ -90,9 +99,10 @@ const Settings = ({ convertToMonthYear }) =>{
         return null;
     };
     const changehandler = (e) =>{
-        setsettingstmpvalue({...settingstmpvalue,[e.target.name]:e.target.value});
+        
         let matchingSuggestions = [];
         if(e.target.value !== ""){
+          setsettingstmpvalue({...settingstmpvalue,[e.target.name]:e.target.value});
             if(e.target.name === "source"){
                 matchingSuggestions = budget_details.source_options.filter(item =>
                 item.toLowerCase().includes(e.target.value.toLowerCase()));
@@ -118,9 +128,13 @@ const Settings = ({ convertToMonthYear }) =>{
             }
         }
         else{
+            document.getElementById(e.target.name+"_btn").classList = "btn btn-primary close_add_btn";
             setsuggestions_source([]);
             setsuggestions_expense([]);
             setsuggestions_saving([]);
+            setTimeout(() => {
+              setsettingstmpvalue({...settingstmpvalue,[e.target.name]:""});
+            }, 300);
         }
 
     }

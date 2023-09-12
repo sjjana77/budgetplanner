@@ -3,6 +3,7 @@ import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom';
 import './style.css';
 import Select from 'react-select';
+import delete_music from './delete_music.mp3';
 import icon_source from '../icons/sourceincome.png';
 import icon_budget from '../icons/budget.png';
 
@@ -90,53 +91,57 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
           setbudget(prev => [...prev,{type:e.type,category:e.value,percentage:0,amount:0}]);
         }
     }
-    const deleteSelectedSource = (value,type,ii) => {
-      setcurrentswipingrow(ii);
-      setanimatecss('-450');
-      setcount(1);
-      let index,cc;
-      if(type === "E"){
-        index = budget_details.expenses_count.findIndex(item => item.name === value);
-        cc = [...budget_details.expenses_count];
-        if(index !== -1){
-          cc[index] = {name: value,count: cc[index].count-1};
+    const deleteSelectedSource = async (value,type,ii) => {
+      await document.getElementById("audioPlayer").play();
+      setTimeout(() => {
+        setcurrentswipingrow(ii);
+        setanimatecss('-450');
+        setcount(1);
+        let index,cc;
+        if(type === "E"){
+          index = budget_details.expenses_count.findIndex(item => item.name === value);
+          cc = [...budget_details.expenses_count];
+          if(index !== -1){
+            cc[index] = {name: value,count: cc[index].count-1};
+          }
+          else{
+            cc.push({name:value,count:1});
+          }
+          setTimeout(() => {
+            setcurrentswipingrow('');
+            setdeleteindex(ii);
+          }, 200);
+          setTimeout(() => {
+            setdeleteindex('');
+            setbudget_details({...budget_details,expenses_count:cc});
+            setcurrentswipingrow('');
+            setbudget(() => budget.filter(prev => prev.category!==value));
+            //setanimatecss(0);
+          }, 300);
         }
         else{
-          cc.push({name:value,count:1});
+          index = budget_details.savings_count.findIndex(item => item.name === value);
+          cc = [...budget_details.savings_count];
+          if(index !== -1){
+            cc[index] = {name: value,count: cc[index].count-1};
+          }
+          else{
+            cc.push({name:value,count:1});
+          }
+          setTimeout(() => {
+            setcurrentswipingrow('');
+            setdeleteindex(ii);
+          }, 200);
+          setTimeout(() => {
+            setdeleteindex(-1);
+            setbudget_details({...budget_details,savings_count:cc});
+            setcurrentswipingrow('');
+            setbudget(() => budget.filter(prev => prev.category!==value));
+            //setanimatecss(0);
+          }, 300);
         }
-        setTimeout(() => {
-          setcurrentswipingrow('');
-          setdeleteindex(ii);
-        }, 200);
-        setTimeout(() => {
-          setdeleteindex('');
-          setbudget_details({...budget_details,expenses_count:cc});
-          setcurrentswipingrow('');
-          setbudget(() => budget.filter(prev => prev.category!==value));
-          //setanimatecss(0);
-        }, 300);
-      }
-      else{
-        index = budget_details.savings_count.findIndex(item => item.name === value);
-        cc = [...budget_details.savings_count];
-        if(index !== -1){
-          cc[index] = {name: value,count: cc[index].count-1};
-        }
-        else{
-          cc.push({name:value,count:1});
-        }
-        setTimeout(() => {
-          setcurrentswipingrow('');
-          setdeleteindex(ii);
-        }, 200);
-        setTimeout(() => {
-          setdeleteindex(-1);
-          setbudget_details({...budget_details,savings_count:cc});
-          setcurrentswipingrow('');
-          setbudget(() => budget.filter(prev => prev.category!==value));
-          //setanimatecss(0);
-        }, 300);
-      }
+      }, 60);
+
 
 
     }
@@ -234,6 +239,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
         if(count === 0){
           setbudget(JSON.parse(localStorage.getItem("budget_details"))[budget_details.selectedmonth].budget);
         }
+        document.getElementById("audioPlayer").playbackRate ="2.0";
       },[])
       if(budget_details.fontsize === undefined){
         budget_details.fontsize = "16";
@@ -294,6 +300,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
       else{
         if(animatecss > -80){
           setcurrentswipingrow('');
+          document.getElementById("root").style.position = "";
         }
   
       }
@@ -301,6 +308,10 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
   
   return (
     <div className="container openingchildcomponents" style={usercss}>
+      <audio id="audioPlayer" style={{display:"none"}} controls>
+        <source src={delete_music} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
         <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Budget</h3>
@@ -437,13 +448,17 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
         <div className="col-2 w-19 m-0 p-1 col-sm-4 col-md-2">
         <input type='number' className="form-control p-1 card-text heading-text mb-3 pe-none" placeholder="%" id='' />
         </div>
-        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={()=>{
-          setcurrentswipingrow(-1);
-          setanimatecss(-450);
+        <div className="col-1 w-12 p-1 col-sm-4 col-md-2 cursor-pointer  d-flex justify-content-center" onClick={async()=>{
+          await document.getElementById("audioPlayer").play();
           setTimeout(() => {
-            document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
-            setnewsourcedisplay(false);
-          }, 150);
+            setcurrentswipingrow(-1);
+            setanimatecss(-450);
+            setTimeout(() => {
+              document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
+              setnewsourcedisplay(false);
+            }, 150);
+          }, 60);
+
         }}>
         <i className="fa fa-trash-o delete" style={{fontSize:"5vw"}}></i>
           </div>

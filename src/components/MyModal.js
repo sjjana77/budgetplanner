@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import { UserContext } from '../UserContext';
 import { Button, Modal } from 'react-bootstrap';
+import delete_music from './delete_music.mp3';
 // import React, {useContext, useEffect, useState} from 'react';
 
 function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, setsuggestions_source, setsuggestions_expense, setsuggestions_saving, setsettingstmpvalue }) {
@@ -10,7 +11,7 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
         fontSize: `${budget_details.fontsize}px`,
         color: `${budget_details.fontcolor}`,
       };
-      const deleteitem= (type,value) =>{
+      const deleteitem = async (type,value) =>{
         let cc,index;
         // if(check === true){
         //     // let c = {...budget_details};
@@ -23,6 +24,7 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
         //     });
         // }
         if(type === "source"){
+            await document.getElementById("audioPlayer").play();
             cc = {...budget_details};
             cc = cc.source_options;
             index = cc.indexOf(value);
@@ -33,10 +35,14 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
             else{
               setbudget_details({...budget_details, source_options:cc});
             }
-            setsuggestions_source([]);
-            setsettingstmpvalue({...settingstmpvalue,source:''});
+            setTimeout(() => {
+              setsuggestions_source([]);
+              setsettingstmpvalue({...settingstmpvalue,source:''});
+            }, 60);
+            
         }
         else if(type === 'expenses'){
+            await document.getElementById("audioPlayer").play();
             cc = [...budget_details.budget_options];
             const matchingEntries = cc.filter(option => (
               option.type === 'E' && option.category === value
@@ -51,10 +57,14 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
             else{
               setbudget_details({...budget_details, budget_options:cc});
             }
-            setsuggestions_expense([]);
-            setsettingstmpvalue({...settingstmpvalue,expenses:''});
+            setTimeout(() => {
+              setsuggestions_expense([]);
+              setsettingstmpvalue({...settingstmpvalue,expenses:''});
+            }, 60);
+
         }
         else{
+            await document.getElementById("audioPlayer").play();
             cc = [...budget_details.budget_options];
             const matchingEntries = cc.filter(option => (
               option.type === 'S' && option.category === value
@@ -69,8 +79,11 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
             else{
               setbudget_details({...budget_details, budget_options:cc});
             }
-            setsuggestions_saving([]);
-            setsettingstmpvalue({...settingstmpvalue,saving:''});
+            setTimeout(() => {
+              setsuggestions_saving([]);
+              setsettingstmpvalue({...settingstmpvalue,saving:''});
+            }, 60);
+
         }
         onClose();
       }

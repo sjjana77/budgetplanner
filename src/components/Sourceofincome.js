@@ -3,6 +3,7 @@ import { UserContext } from '../UserContext';
 import { Link } from 'react-router-dom'; 
 import Select from 'react-select';
 import './style.css';
+import delete_music from './delete_music.mp3';
 // import { Swipeable } from 'react-swipeable'; 
 // import Swipeable from 'react-native-gesture-handler/Swipeable';
 // import icon_source from '../icons/sourceincome.png';
@@ -95,36 +96,40 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       tmp.splice(index,1,{source:e.value, income: 0, percent: ""});
       setselectedsource(tmp);
     }
-    const deleteSelectedSource = (value,ii) => {
-      setcurrentswipingrow(ii);
-      setanimatecss('-450');
-      setcount(1);
-      let tmp = [...selectedsource];
-      let previncome = 0;
-      tmp = tmp.filter(prev => prev.source!==value);
-      let t = 0;
-      tmp.map(src => t+=parseInt(src.income));
+    const deleteSelectedSource = async (value,ii) => {
+      await document.getElementById("audioPlayer").play();
+      setTimeout(() => {
+        setcurrentswipingrow(ii);
+        setanimatecss('-450');
+        setcount(1);
+        let tmp = [...selectedsource];
+        let previncome = 0;
+        tmp = tmp.filter(prev => prev.source!==value);
+        let t = 0;
+        tmp.map(src => t+=parseInt(src.income));
+  
+        let index = budget_details.source_count.findIndex(item => item.name === value);
+        let cc = [...budget_details.source_count];
+        if(index !== -1){
+          cc[index] = {name: value,count: cc[index].count-1};
+        }
+        setbudget_details({...budget_details,source_count:cc});
+        for (let i = 0; i < tmp.length; i++) {
+          let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
+          tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
+        }
+        // setselectedsource(tmp);
+        setTimeout(() => {
+          setcurrentswipingrow('');
+          setdeleteindex(ii);
+        }, 200);
+        setTimeout(() => {
+          setdeleteindex('');
+          setcurrentswipingrow('');
+          setselectedsource(tmp);
+        }, 300);
+      }, 60);
 
-      let index = budget_details.source_count.findIndex(item => item.name === value);
-      let cc = [...budget_details.source_count];
-      if(index !== -1){
-        cc[index] = {name: value,count: cc[index].count-1};
-      }
-      setbudget_details({...budget_details,source_count:cc});
-      for (let i = 0; i < tmp.length; i++) {
-        let percent = (parseInt(tmp[i].income)/parseInt(t))*100;
-        tmp[i] = {...tmp[i],percent: percent.toFixed(2)};
-      }
-      // setselectedsource(tmp);
-      setTimeout(() => {
-        setcurrentswipingrow('');
-        setdeleteindex(ii);
-      }, 200);
-      setTimeout(() => {
-        setdeleteindex('');
-        setcurrentswipingrow('');
-        setselectedsource(tmp);
-      }, 300);
     }
     const changeIncome = (e) =>{
       setcount(1);
@@ -186,6 +191,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
           setselectedsource(JSON.parse(localStorage.getItem('budget_details'))[budget_details.selectedmonth].selectedsource);
         }       
       }
+      document.getElementById("audioPlayer").playbackRate ="2.0";
     },[])
     // useEffect(()=>{
     //   console.log(incomedetails);
@@ -248,7 +254,6 @@ const Sourceofincome = ({ convertToMonthYear }) => {
             setanimatecss(0);
           }, 150);
         }
-        document.getElementById("root").style.position = "";
         // deleteSelectedSource(value,e);
       }
     }
@@ -258,10 +263,15 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       }
 
     }
+    document.getElementById("root").style.position = "";
   };
 
   return (
     <div className="container sourceofincome openingchildcomponents" id='sourceofincome' style={usercss}>
+      <audio id="audioPlayer" style={{display:"none"}} controls>
+      <source src={delete_music} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
       <div className='row mt-3'>
         <div className='col'>
         <h3 className=''>Source of Income</h3>
@@ -390,13 +400,18 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded w-23">
             <input type='number' className="mt-2 form-control mb-3 heading-input pe-none card-text heading-text" placeholder="%"  />
           </div>
-        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={()=>{
-          setcurrentswipingrow(-1);
-          setanimatecss(-450);
-          setTimeout(() => {
-            document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
-            setnewsourcedisplay(false);
-          }, 150);
+        <div className="col-1 m-0 p-1 col-sm-4 col-md-2 m-1 rounded cursor-pointer  d-flex justify-content-center" onClick={async()=>{
+          
+          await document.getElementById("audioPlayer").play();
+            setTimeout(() => {
+            setcurrentswipingrow(-1);
+            setanimatecss(-450);
+            setTimeout(() => {
+              document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item";
+              setnewsourcedisplay(false);
+            }, 150);
+          }, 60);
+
         }}>
           <i className="fa fa-trash-o" style={{fontSize:"5vw",marginRight:"6px",marginTop:"10px"}}></i>
           </div>
@@ -411,11 +426,12 @@ const Sourceofincome = ({ convertToMonthYear }) => {
 
       }
         <u className='text-primary heading-text' id='addnewsource' onClick={()=>{
-          document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
-          document.getElementById("newsource").style.display = "flex";
-          setanimatecss(0);
-          setnewsourcedisplay(true);
-          setcount(1);
+            document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
+            document.getElementById("newsource").style.display = "flex";
+            setanimatecss(0);
+            setnewsourcedisplay(true);
+            setcount(1);
+
           }}>+ Add New Type</u>
     </div>
   )
