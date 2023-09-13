@@ -90,9 +90,10 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
       const deletebtn = () =>{
         return (
             <div>
-            <input type='checkbox' checked={check} onChange={()=>setcheck(!(check))} />
-            <button onClick={()=>deleteitem(deleteitemvalue.type,deleteitemvalue.value)} className='btn btn-primary'>Yes</button>
-            <button onClick={onClose} className='btn btn-primary'>No</button>
+            <input type='checkbox' checked={check} onChange={()=>setcheck(!(check))} />&nbsp;
+            Don't Ask Again<br />
+            <button onClick={()=>deleteitem(deleteitemvalue.type,deleteitemvalue.value)} className='btn btn-primary asktodeletebtn'>Yes</button>
+            <button onClick={onClose} className='btn btn-primary asktodeletebtn'>No</button>
             </div>
         )
       }
@@ -104,8 +105,11 @@ function MyModal({ show, onClose, content, deleteitemvalue, settingstmpvalue, se
         )
       }
     return (
-        <Modal className='d-flex justify-content-center' centered show={show} onHide={onClose} style={usercss}>
-        
+        <Modal className='d-flex justify-content-center modall' centered show={show} onHide={onClose} style={usercss}>
+        <audio id="audioPlayer" style={{display:"none"}} controls>
+        <source src={delete_music} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
         <Modal.Body style={{background: "#b0d3e1"}}>
             <p className='d-flex justify-content-center'>{content}</p>
         {content.search("Are you sure you want to") !== -1    ?

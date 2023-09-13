@@ -433,6 +433,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
             setcount(1);
 
           }}>+ Add New Type</u>
+          <br /><br />
     </div>
   )
 }

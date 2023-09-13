@@ -480,6 +480,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
           setnewsourcedisplay(true);
           setcount(1);
           }}>+ Add New Type</u>
+          <br /><br />
     </div>
   )
 }

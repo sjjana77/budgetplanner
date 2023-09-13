@@ -134,7 +134,7 @@ const Settings = ({ convertToMonthYear }) =>{
             setsuggestions_saving([]);
             setTimeout(() => {
               setsettingstmpvalue({...settingstmpvalue,[e.target.name]:""});
-            }, 300);
+            }, 150);
         }
 
     }
@@ -181,7 +181,7 @@ const Settings = ({ convertToMonthYear }) =>{
         }
         else{
           if(budget_details.askdelete === "yes"){
-          setmodalcontent(`Are you sure you want to delete`);
+          setmodalcontent(`Are you sure you want to delete?`);
           setdeleteitemvalue({type:type,value:value});
           handleOpenModal();
           }
@@ -272,42 +272,42 @@ const Settings = ({ convertToMonthYear }) =>{
             </div>
         </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Font Color
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                 <input className='form-control' onChange={(e)=>setbudget_details({...budget_details,fontcolor:e.target.value})} value={budget_details.fontcolor} type="color" id="colorPicker" name="fontcolor" />
                 </div>
-                <div className='col'>
+                <div className='col-3'>
                 </div>
             </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Font Size
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                     <input className='form-control' onChange={(e)=>setbudget_details({...budget_details,fontsize:e.target.value})} value={parseInt(budget_details.fontsize)} type="number" min='12' max='60' name='fontsize' placeholder="Size" />
 
                 </div>
-                <div className='col'>
+                <div className='col-3'>
                 </div>
             </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Feedback
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                     <textarea onKeyDown={handleKeyDown} className='form-control' name='feedback' value={settingstmpvalue.feedback} id='feedback' onChange={changehandler} placeholder='Feedback'></textarea>
                 </div>
-                <div className='col feedback_col'>
+                <div className='col-3 feedback_col'>
                 {renderAddButton('feedback')}
                 </div>
             </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Add Expense
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                 <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_source([]);setsuggestions_saving([]);}} value={settingstmpvalue.expense} id='expense' name='expense' onChange={changehandler} type="text" placeholder="Expense" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
@@ -323,15 +323,15 @@ const Settings = ({ convertToMonthYear }) =>{
                 </div></div>
                 )}
                 </div>
-                <div className='col expense_col'>
+                <div className='col-3 expense_col'>
                 {renderAddButton('expense')}
                 </div>
             </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Add Saving
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                 <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_source([]);setsuggestions_expense([]);}} value={settingstmpvalue.saving} id='saving' name='saving' onChange={changehandler} type="text" placeholder="Saving" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
@@ -357,15 +357,15 @@ const Settings = ({ convertToMonthYear }) =>{
         </div>
       )} */}
                 </div>
-                <div className='col saving_col'>
+                <div className='col-3 saving_col'>
                 {renderAddButton('saving')}
                 </div>
             </div>
             <div className='row'>
-                <div className='col'>
+                <div className='col-4'>
                     Add Income Source
                 </div>
-                <div className='col'>
+                <div className='col-5 settings_input'>
                 <input onKeyDown={handleKeyDown} className='form-control' onFocus={() => {setIsDropdownOpen(true);setsuggestions_expense([]);setsuggestions_saving([]);}} value={settingstmpvalue.source} id='source' name='source' onChange={changehandler} type="text" placeholder="Income Source" />
                 {isDropdownOpen && (
                 <div className="suggestions-modal">
@@ -381,7 +381,7 @@ const Settings = ({ convertToMonthYear }) =>{
                 </div></div>
                 )}
                 </div>
-                <div className='col source_col'>
+                <div className='col-3 source_col'>
                 {renderAddButton('source')}
                 </div>
             </div>
