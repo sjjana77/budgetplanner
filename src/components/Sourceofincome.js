@@ -238,7 +238,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       setIsSwiping(false);
 
       setcurrentswipingrow(e);
-      if(animatecss > -80){ //old value -10
+      if(animatecss > -30){ //old value -10
         setcurrentswipingrow('');
       }
       else{

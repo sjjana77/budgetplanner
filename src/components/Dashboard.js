@@ -184,17 +184,35 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
             </Link>
           </div> */}
           <div className="col bg-success m-3 rounded w-100">
-          <Link to="/source" className="d-block">
+          <Link to="/source" className="d-block"  onClick={(e)=>{
+              e.preventDefault();
+              setTimeout(() => {
+                sethistory('source')
+                navigate('/source');
+              }, 10);
+              }}>
             <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].income}</p>
           </Link>
           </div>
           <div className="col bg-warning m-3 rounded w-100">
-          <Link to="/budget" className="d-block">
+          <Link to="/budget" className="d-block" onClick={(e)=>{
+              e.preventDefault();
+              setTimeout(() => {
+                sethistory('budget')
+                navigate('/budget');
+              }, 10);
+              }}>
             <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].savings}</p>
           </Link>
           </div>
           <div className="col bg-danger m-3 rounded w-100">
-            <Link to="/budget" className="d-block">
+            <Link to="/budget" className="d-block" onClick={(e)=>{
+            e.preventDefault();
+            setTimeout(() => {
+              sethistory('budget')
+              navigate('/budget');
+            }, 10);
+            }}>
             <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "")  ? 0 : budget_details[budget_details.selectedmonth].expenses}</p>
             </Link>
           </div>

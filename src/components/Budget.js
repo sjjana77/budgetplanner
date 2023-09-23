@@ -277,7 +277,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
       if (isSwiping) {
         setIsSwiping(false);
         setcurrentswipingrow(e);
-        if(animatecss > -80){
+        if(animatecss > -30){
           setcurrentswipingrow('');
         }
         else{
