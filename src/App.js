@@ -5,6 +5,8 @@ import Budget from './components/Budget';
 import Settings from './components/Settings';
 import { useState } from "react";
 import './components/style.css';
+
+
 import { UserProvider } from './UserContext';
 
 function App() {
@@ -18,7 +20,8 @@ function App() {
     return months[parseInt(month) - 1] + ' ' + year;
   }
   return (
-    <div className="App first">
+    // if i add class first zoom out will appear
+    <div className="App">
       <Router>
         <UserProvider>
           <Routes>

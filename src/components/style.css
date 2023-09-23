@@ -1,10 +1,10 @@
-*:focus {
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
+.highlight-btnn{
+  animation: highlight-btnn 4s 1;
 }
-
+@keyframes highlight-btnn {
+  from{background: #339367!important;}
+  to{background:''}
+}
 .modall{
   transition: opacity 0.3s ease-in-out;
 }
@@ -145,8 +145,8 @@ u.heading-text{
 .bg-grid{
   background: #3ed1d5;
 }
-.d-block:hover{
-  
+.d-block{
+  text-decoration: none;
 }
 .close{
   position: relative;
