@@ -238,7 +238,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
       setIsSwiping(false);
 
       setcurrentswipingrow(e);
-      if(animatecss > -10){
+      if(animatecss > -80){ //old value -10
         setcurrentswipingrow('');
       }
       else{
@@ -428,6 +428,7 @@ const Sourceofincome = ({ convertToMonthYear }) => {
         <u className='text-primary heading-text' id='addnewsource' onClick={()=>{
             document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
             document.getElementById("newsource").style.display = "flex";
+            document.getElementById("root").style.position = "fixed";
             setanimatecss(0);
             setnewsourcedisplay(true);
             setcount(1);

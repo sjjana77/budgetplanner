@@ -131,13 +131,13 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
     <div className="container dashboard" id='dashboard' style={usercss}>
       <div className='row mt-3'>
         <div className='col-5'>
-        <h4 className='justify-content-center'>DASHBOARD</h4> 
+          <h4 className='justify-content-center'>DASHBOARD</h4> 
         </div>
         <div className='col-4'>
-        <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
+          <input style={{left:"-11%",position:"relative"}} className='justify-content-center cursor-pointer' type="month" id="month_input" name="bdaymonth" value={budget_details.selectedmonth} onChange={changemonth} />
         </div>
         <div className='col-2'>
-        <Link to="/settings" onClick={(e)=>{
+          <Link to="/settings" onClick={(e)=>{
           e.preventDefault();
           document.querySelector('.sss').style.transform = "rotate(45deg)";
           setTimeout(() => {
@@ -150,39 +150,54 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
         </div>
         </div>
         <div className="row text-white">
-        <div className="col bg-success m-3 rounded w-100" >
-        <Link to="/source" className="d-block" id='income_page' onClick={(e)=>{
-          e.preventDefault();
-          setTimeout(() => {
-            sethistory('source')
-            navigate('/source');
-          }, 10);
-          }}>
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
-        </Link>
-        </div>
-        <div className="col bg-warning m-3 rounded w-100">
-        <Link to="/budget" className="d-block" onClick={(e)=>{
-          e.preventDefault();
-          setTimeout(() => {
-            sethistory('budget')
-            navigate('/budget');
-          }, 10);
-          }}>
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
-        </Link>
-        </div>
-        <div className="col bg-danger m-3 rounded w-100">
-          <Link to="/budget" className="d-block" onClick={(e)=>{
-          e.preventDefault();
-          setTimeout(() => {
-            sethistory('budget')
-            navigate('/budget');
-          }, 10);
-          }}>
-          <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+          {/* <div className="col bg-success m-3 rounded w-100" >
+            <Link to="/source" className="d-block" id='income_page' onClick={(e)=>{
+              e.preventDefault();
+              setTimeout(() => {
+                sethistory('source')
+                navigate('/source');
+              }, 10);
+              }}>
+              <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income</p>
+            </Link>
+          </div>
+          <div className="col bg-warning m-3 rounded w-100">
+            <Link to="/budget" className="d-block" onClick={(e)=>{
+              e.preventDefault();
+              setTimeout(() => {
+                sethistory('budget')
+                navigate('/budget');
+              }, 10);
+              }}>
+                <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings</p>
+              </Link>
+          </div>
+          <div className="col bg-danger m-3 rounded w-100">
+            <Link to="/budget" className="d-block" onClick={(e)=>{
+            e.preventDefault();
+            setTimeout(() => {
+              sethistory('budget')
+              navigate('/budget');
+            }, 10);
+            }}>
+              <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses</p>
+            </Link>
+          </div> */}
+          <div className="col bg-success m-3 rounded w-100">
+          <Link to="/source" className="d-block">
+            <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Income<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].income}</p>
           </Link>
-        </div>
+          </div>
+          <div className="col bg-warning m-3 rounded w-100">
+          <Link to="/budget" className="d-block">
+            <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Savings<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "") ? 0 : budget_details[budget_details.selectedmonth].savings}</p>
+          </Link>
+          </div>
+          <div className="col bg-danger m-3 rounded w-100">
+            <Link to="/budget" className="d-block">
+            <p className="card-text heading-text p-2 d-flex justify-content-center text-white">Expenses<br /> {(budget_details.selectedmonth === undefined || budget_details.selectedmonth === "")  ? 0 : budget_details[budget_details.selectedmonth].expenses}</p>
+            </Link>
+          </div>
         </div>
       <div className="row">
         {/* <div className="col rounded w-100">
@@ -194,7 +209,8 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
         <div className="col rounded w-100">
           <input id="total_income" value={budget_details.selectedmonth === undefined  ? 0  : budget_details[budget_details.selectedmonth].expenses} className="form-control p-2 heading-input" readOnly />
         </div> */}
-        <div className="col rounded w-100">
+
+        {/* <div className="col rounded w-100">
           <label id="total_income" className="form-control p-2 heading-input"> {budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].income} </label>
         </div>
         <div className="col rounded w-100">
@@ -202,7 +218,10 @@ const Dashboard = ({ convertToMonthYear, history, sethistory }) => {
         </div>
         <div className="col rounded w-100">
           <label id="total_income" className="form-control p-2 heading-input">{budget_details.selectedmonth === undefined    ? 0 : budget_details[budget_details.selectedmonth].expenses}</label>
-        </div>
+        </div> */}
+
+        
+
       </div>
       <br />
       <div className=''>

@@ -277,7 +277,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
       if (isSwiping) {
         setIsSwiping(false);
         setcurrentswipingrow(e);
-        if(animatecss > -10){
+        if(animatecss > -80){
           setcurrentswipingrow('');
         }
         else{
@@ -476,6 +476,7 @@ const Budget = ({ convertToMonthYear, history, sethistory  }) => {
       }
         <u className='text-primary heading-text' id='addnewsource' onClick={()=>{
           document.getElementById("newsource").classList = "row m-0 bg-grid swipe-list-item move";
+          document.getElementById("root").style.position = "fixed";
           setanimatecss(0);
           setnewsourcedisplay(true);
           setcount(1);
